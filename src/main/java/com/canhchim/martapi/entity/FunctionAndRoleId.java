@@ -1,3 +1,7 @@
+/**
+ * Author: Duong Ngo Nam Anh
+ */
+
 package com.canhchim.martapi.entity;
 
 import org.hibernate.Hibernate;
