@@ -14,4 +14,9 @@ public class TestAPI {
         return "Test1 GetData ok ." ;
     }
 
+    @GetMapping("/test2")
+    public String GetData()
+    {  return "test2 GetData ok . " ;
+    }
+
 }
