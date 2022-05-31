@@ -1,14 +1,14 @@
 package com.canhchim.martapi.module.auth.filter;
 
+import com.canhchim.martapi.dto.UserDetailDto;
 import com.canhchim.martapi.entity.Admin;
-import com.canhchim.martapi.entity.User;
 import com.canhchim.martapi.module.admin.IAdminService;
 import com.canhchim.martapi.module.user.IUserService;
 import com.canhchim.martapi.util.JwtUtil;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -38,13 +38,15 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String requestTokenHeader = request.getHeader("Authorization");
-
         String username = null;
         String jwtToken = null;
+        String type = null;
+        //Validate token
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = requestTokenHeader.substring(7);
             try {
                 username = jwtUtil.getUsernameFromToken(jwtToken);
+                type = jwtUtil.getAccountTyeFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
                 System.out.println("Unable to get JWT Token");
             } catch (ExpiredJwtException e) {
@@ -56,13 +58,14 @@ public class JwtFilter extends OncePerRequestFilter {
 
         // Once we get the token validate it.
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            String type = jwtUtil.getAccountTyeFromToken(jwtToken);
-            System.out.println(type);
             UserDetails userDetails;
+            //Check account type
             if (type.equals("ADMIN")) {
+                //Type ADMIN
                 userDetails = initUserDetailsFromAdmin(username);
             }
             else {
+                //Type SHOP
                 userDetails = initUserDetailsFromUser(username);
             }
 
@@ -93,9 +96,13 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     private UserDetails initUserDetailsFromUser(String username) throws IOException {
-        User user = this.userService.findByUsernameLike(username);
+        UserDetailDto user = this.userService.findUserDetailByUsernameLike(username);
         String password = user.getUserPassword();
         Collection<GrantedAuthority> roles = new HashSet<>();
+        for (String function: user.getFunctions()) {
+            roles.add(new SimpleGrantedAuthority(function));
+            System.out.println(function);
+        }
         UserDetails userDetails = new org.springframework.security.core.userdetails.User(username, password, roles);
         return userDetails;
     }

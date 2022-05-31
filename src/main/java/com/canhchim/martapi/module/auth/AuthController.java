@@ -30,7 +30,9 @@ public class AuthController {
     public ResponseEntity<?> adminLogin(@RequestBody LoginRequestDto loginRequestDto, HttpServletRequest request) {
         try {
             LoginResponseDto loginResponseDto = authService.loginAdmin(loginRequestDto.getUsername(), loginRequestDto.getPassword());
-            return ResponseEntity.status(HttpServletResponse.SC_OK).body(loginResponseDto);
+            return ResponseEntity.status(HttpServletResponse.SC_OK)
+                    .header("Authorization", "Bearer " + loginResponseDto.getAccessToken())
+                    .body(loginResponseDto);
         }
         catch (Exception e) {
             ErrorResponseDto errorResponseDto = new ErrorResponseDto();
@@ -49,7 +51,9 @@ public class AuthController {
     public ResponseEntity<?> userLogin(@RequestBody LoginRequestDto loginRequestDto, HttpServletRequest request) {
         try {
             LoginResponseDto loginResponseDto = authService.loginUser(loginRequestDto.getUsername(), loginRequestDto.getPassword());
-            return ResponseEntity.status(HttpServletResponse.SC_OK).body(loginResponseDto);
+            return ResponseEntity.status(HttpServletResponse.SC_OK)
+                    .header("Authorization", "Bearer " + loginResponseDto.getAccessToken())
+                    .body(loginResponseDto);
         }
         catch (Exception e) {
             ErrorResponseDto errorResponseDto = new ErrorResponseDto();

@@ -4,5 +4,8 @@
     <option name="defaultUnitInitialized" value="true" />
     <option name="reverseEngineeringLastDbConnectionId" value="3b9a4e1e-4332-403a-9dcb-6bdce73eea17" />
     <option name="reLastEntityCreationPackage" value="src/main/java/com/canhchim/martapi/entity" />
+    <option name="reIgnoreSlowDbConnections">
+      <ignoreDs id="3b9a4e1e-4332-403a-9dcb-6bdce73eea17" />
+    </option>
   </component>
 </project>

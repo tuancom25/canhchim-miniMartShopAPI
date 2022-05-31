@@ -1,16 +1,23 @@
 package com.canhchim.martapi.module.auth.impl;
 
 import com.canhchim.martapi.dto.LoginResponseDto;
+import com.canhchim.martapi.dto.RSADto;
+import com.canhchim.martapi.dto.UserResponseDto;
 import com.canhchim.martapi.entity.Admin;
 import com.canhchim.martapi.entity.User;
 import com.canhchim.martapi.module.admin.IAdminService;
 import com.canhchim.martapi.module.auth.IAuthService;
+import com.canhchim.martapi.module.role.IFunctionAndRoleService;
+import com.canhchim.martapi.module.role.IRoleService;
+import com.canhchim.martapi.module.user.IRoleOfUserService;
 import com.canhchim.martapi.module.user.IUserService;
 import com.canhchim.martapi.util.JwtUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -19,11 +26,15 @@ public class AuthServiceImpl implements IAuthService {
     private IAdminService adminService;
 
     private IUserService userService;
+    private IRoleOfUserService roleOfUserService;
+    private IFunctionAndRoleService functionAndRoleService;
 
-    public AuthServiceImpl(JwtUtil jwtUtil, IAdminService adminService, IUserService userService) {
+    public AuthServiceImpl(JwtUtil jwtUtil, IAdminService adminService, IUserService userService, IRoleOfUserService roleOfUserService, IFunctionAndRoleService functionAndRoleService) {
         this.jwtUtil = jwtUtil;
         this.adminService = adminService;
         this.userService = userService;
+        this.roleOfUserService = roleOfUserService;
+        this.functionAndRoleService = functionAndRoleService;
     }
 
     @Override
@@ -49,8 +60,30 @@ public class AuthServiceImpl implements IAuthService {
         String salt = user.getUserPasswordSalt();
         if (user.getUserPassword().equals(hashPassword(password, salt))) {
             //Login success
-            String accessToken = jwtUtil.generateToken(username, "USER");
+            UserResponseDto userResponseDto = new UserResponseDto();
+            RSADto rsaDto = new RSADto();
+            List<Integer> roles = roleOfUserService.findRoleIdsByUser_id(user.getId());
+            List<String> functions = new ArrayList<>();
+
+            for (Integer roleId: roles) {
+                for (String function: functionAndRoleService.findFunction_IdByRole_Id(roleId)) functions.add(function);
+            }
+
+            userResponseDto.setId(user.getId());
+            userResponseDto.setUsername(user.getUsername());
+            userResponseDto.setFullname(user.getUserFullName());
+            userResponseDto.setPhone(user.getUserPhone());
+            userResponseDto.setEmail(user.getUserEmail());
+            userResponseDto.setCccd(user.getUserCCCD());
+            userResponseDto.setAddress(user.getUserAddress());
+            userResponseDto.setRsa(rsaDto);
+            userResponseDto.setIpLastWork(user.getUserIPLastWork());
+            userResponseDto.setFunctions(functions);
+
+            String accessToken = jwtUtil.generateToken(username, "SHOP");
+            loginResponseDto.setUser(userResponseDto);
             loginResponseDto.setAccessToken(accessToken);
+
             return loginResponseDto;
         }
         throw new Exception();

@@ -11,15 +11,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.Instant;
+import java.util.*;
 import java.util.function.Function;
 
 @Component
 @Slf4j
 public class JwtUtil {
-    private final String JWT_SECRET = "66w94CaPsFS32124rSUZ5DpWduia16YSYNOvfb1eGmuMd8FeNg6iM6o5WoThV3SzT8M1C5M5smGP1PHz5VF8Jg";
+    private final String JWT_SECRET = "66w94CaPsFS32124rSUZ5DpWduia16YSYNOvfb1eGmuMd8FeNg6iM6o5WoThV3SzT8M1C5M5smGP1PHz5VF8Jg166w94CaPsFS32124rSUZ5DpWduia16YSYNOvfb1eGmuMd8FeNg6iM6o5WoThV3SzT8M1C5M5smGP1PHz5VF";
     private final long JWT_EXPIRATION = 86400000L;
 
     public String generateToken(String username, String type) throws Exception{
@@ -39,7 +38,6 @@ public class JwtUtil {
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
-
     public String getAccountTyeFromToken(String token) {
         final Claims claims = getAllClaimsFromToken(token);
         return claims.get("type").toString();
