@@ -5,6 +5,7 @@
 package com.canhchim.martapi.module.user;
 
 import com.canhchim.martapi.dto.UserDetailDto;
+import com.canhchim.martapi.dto.UserResponseDto;
 import com.canhchim.martapi.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,12 +40,21 @@ public interface IUserService {
 
     Page<User> findAll(Pageable pageable, Sort sort);
 
+    Page<User> findAll(String search, String searchField, Pageable pageable, Sort sort);
+
     /**
      * Tìm User với username
      * @param username
      * @return
      */
     User findByUsernameLike(String username);
+
+    /**
+     * Tìm User bằng Id
+     * @param id
+     * @return
+     */
+    User findById(Integer id);
 
 
     /**
@@ -59,4 +69,6 @@ public interface IUserService {
      * @return
      */
     UserDetailDto findUserDetailByUsernameLike(String username) throws IOException;
+
+//    UserResponseDto create() throws IOException;
 }

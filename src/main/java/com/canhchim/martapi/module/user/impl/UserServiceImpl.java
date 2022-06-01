@@ -20,6 +20,7 @@ import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -56,6 +57,18 @@ public class UserServiceImpl implements IUserService {
     @Override
     public Page<User> findAll(Pageable pageable, Sort sort) {
         return null;
+    }
+
+    @Override
+    public Page<User> findAll(String search, String searchField, Pageable pageable, Sort sort) {
+        return null;
+    }
+
+    @Override
+    public User findById(Integer id) {
+        return userRepository
+                .findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("User có Id=%d không tồn tại!", id)));
     }
 
     @Override
