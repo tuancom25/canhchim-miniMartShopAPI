@@ -15,6 +15,7 @@ import com.canhchim.martapi.util.JwtUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +46,7 @@ public class AuthServiceImpl implements IAuthService {
         String salt = admin.getAdminPassswordSalt();
         if (admin.getAdminPassword().equals(hashPassword(password, salt))) {
             //Login success
-            String accessToken = jwtUtil.generateToken(username, "ADMIN");
+            String accessToken = jwtUtil.generateToken(username, "ADMIN", 0);
             loginResponseDto.setAccessToken(accessToken);
             return loginResponseDto;
         }
@@ -54,12 +55,15 @@ public class AuthServiceImpl implements IAuthService {
 
     @Override
     public LoginResponseDto loginUser(String username, String password) throws Exception {
-        LoginResponseDto loginResponseDto = new LoginResponseDto();
-
+        //Tìm User
         User user = userService.findByUsernameLike(username);
+        System.out.println(user);
+        //Kiểm tra user có tồn tại trong DB?
+        if (user == null) throw new Exception("Tài khoản hoặc mật khẩu không chính xác!");
         String salt = user.getUserPasswordSalt();
         if (user.getUserPassword().equals(hashPassword(password, salt))) {
             //Login success
+            LoginResponseDto loginResponseDto = new LoginResponseDto();
             UserResponseDto userResponseDto = new UserResponseDto();
             RSADto rsaDto = new RSADto();
             List<Integer> roles = roleOfUserService.findRoleIdsByUser_id(user.getId());
@@ -80,13 +84,13 @@ public class AuthServiceImpl implements IAuthService {
             userResponseDto.setIpLastWork(user.getUserIPLastWork());
             userResponseDto.setFunctions(functions);
 
-            String accessToken = jwtUtil.generateToken(username, "SHOP");
+            String accessToken = jwtUtil.generateToken(username, "SHOP", user.getUserShop().getId());
             loginResponseDto.setUser(userResponseDto);
             loginResponseDto.setAccessToken(accessToken);
 
             return loginResponseDto;
         }
-        throw new Exception();
+        throw new Exception("Tài khoản hoặc mật khẩu không chính xác!");
     }
 
     private String generateSalt() {

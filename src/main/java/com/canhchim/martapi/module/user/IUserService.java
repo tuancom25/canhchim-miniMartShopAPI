@@ -5,6 +5,7 @@
 package com.canhchim.martapi.module.user;
 
 import com.canhchim.martapi.dto.UserDetailDto;
+import com.canhchim.martapi.dto.UserRequestDto;
 import com.canhchim.martapi.dto.UserResponseDto;
 import com.canhchim.martapi.entity.User;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public interface IUserService {
@@ -47,7 +49,7 @@ public interface IUserService {
      * @param username
      * @return
      */
-    User findByUsernameLike(String username);
+    User findByUsernameLike(String username) throws Exception;
 
     /**
      * Tìm User bằng Id
@@ -70,5 +72,17 @@ public interface IUserService {
      */
     UserDetailDto findUserDetailByUsernameLike(String username) throws IOException;
 
-//    UserResponseDto create() throws IOException;
+    /**
+     * Tạo User mới
+     * @param userRequestDto
+     * @return
+     * @throws IOException
+     */
+    UserResponseDto create(UserRequestDto userRequestDto) throws IOException, NoSuchAlgorithmException;
+
+    /**
+     * Khóa tài khoản
+     * @param username
+     */
+    void ban(String username);
 }

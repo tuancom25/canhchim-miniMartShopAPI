@@ -1,7 +1,3 @@
-/**
- * Author: Duong Ngo Nam Anh
- */
-
 package com.canhchim.martapi.entity;
 
 import javax.persistence.*;
@@ -42,8 +38,9 @@ public class User {
     @Column(name = "UserAddress", length = 150)
     private String userAddress;
 
-    @Column(name = "UserFunctionKey", length = 12)
-    private String userFunctionKey;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "UserShopId", nullable = false)
+    private Shop userShop;
 
     @Column(name = "UserLastTimeActive")
     private Instant userLastTimeActive;
@@ -62,6 +59,9 @@ public class User {
 
     @Column(name = "UserDeviceList", length = 301)
     private String userDeviceList;
+
+    @Column(name = "UserType")
+    private Integer userType;
 
     public Integer getId() {
         return id;
@@ -143,12 +143,12 @@ public class User {
         this.userAddress = userAddress;
     }
 
-    public String getUserFunctionKey() {
-        return userFunctionKey;
+    public Shop getUserShop() {
+        return userShop;
     }
 
-    public void setUserFunctionKey(String userFunctionKey) {
-        this.userFunctionKey = userFunctionKey;
+    public void setUserShop(Shop userShop) {
+        this.userShop = userShop;
     }
 
     public Instant getUserLastTimeActive() {
@@ -197,6 +197,14 @@ public class User {
 
     public void setUserDeviceList(String userDeviceList) {
         this.userDeviceList = userDeviceList;
+    }
+
+    public Integer getUserType() {
+        return userType;
+    }
+
+    public void setUserType(Integer userType) {
+        this.userType = userType;
     }
 
 }
