@@ -4,10 +4,9 @@
 
 package com.canhchim.martapi.module.user;
 
-import com.canhchim.martapi.dto.DataDto;
-import com.canhchim.martapi.dto.ErrorResponseDto;
-import com.canhchim.martapi.dto.ResponseDto;
+import com.canhchim.martapi.dto.*;
 import com.canhchim.martapi.entity.User;
+import com.canhchim.martapi.util.PermissionUtil;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -18,21 +17,24 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Date;
 
 @RestController
 @RequestMapping(path = "/shop/users")
 public class UserController {
     private final IUserService userService;
+    private final PermissionUtil permissionUtil;
 
-    public UserController(IUserService userService) {
+    public UserController(IUserService userService, PermissionUtil permissionUtil) {
         this.userService = userService;
+        this.permissionUtil = permissionUtil;
     }
 
     @GetMapping("")
     public ResponseEntity<?> getAll(
-            @PathVariable @Nullable Integer pageNumber,
-            @PathVariable @Nullable Integer pageSize
+            @RequestParam @Nullable Integer pageNumber,
+            @RequestParam @Nullable Integer pageSize
     ) {
         if (pageSize == null) pageSize = 20;
         if (pageNumber == null) pageNumber = 0;
@@ -43,11 +45,29 @@ public class UserController {
         return ResponseEntity.status(HttpServletResponse.SC_OK).body(responseDto);
     }
     @PostMapping("")
-    public ResponseEntity<?> create() {
+    public ResponseEntity<?> create(@RequestBody UserRequestDto userRequestDto) throws IOException {
+        //Tạo user
+        UserResponseDto userResponseDto = userService.create(userRequestDto);
+        //Khởi tạo đối tượng Response
         ResponseDto responseDto = new ResponseDto();
         DataDto dataDto = new DataDto();
+        responseDto.setMessage("Tạo User mới thành công!");
+        dataDto.setContent(userResponseDto);
+        responseDto.setData(dataDto);
+        return ResponseEntity.status(HttpServletResponse.SC_CREATED).body(responseDto);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(HttpServletRequest request, @PathVariable Integer id, @RequestBody UserRequestDto userRequestDto) throws IOException {
+        permissionUtil.acceptAction(request, "User", "userShop.id", "id", id);
+
         //Tạo user
-        dataDto.setContent("Tạo User mới thành công!");
+        UserResponseDto userResponseDto = userService.create(userRequestDto);
+        //Khởi tạo đối tượng Response
+        ResponseDto responseDto = new ResponseDto();
+        DataDto dataDto = new DataDto();
+        responseDto.setMessage("Cập nhật User mới thành công!");
+        dataDto.setContent(userResponseDto);
         responseDto.setData(dataDto);
         return ResponseEntity.status(HttpServletResponse.SC_CREATED).body(responseDto);
     }

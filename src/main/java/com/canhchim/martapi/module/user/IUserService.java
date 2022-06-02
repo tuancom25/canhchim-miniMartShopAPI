@@ -5,6 +5,7 @@
 package com.canhchim.martapi.module.user;
 
 import com.canhchim.martapi.dto.UserDetailDto;
+import com.canhchim.martapi.dto.UserRequestDto;
 import com.canhchim.martapi.dto.UserResponseDto;
 import com.canhchim.martapi.entity.User;
 import org.springframework.data.domain.Page;
@@ -70,5 +71,11 @@ public interface IUserService {
      */
     UserDetailDto findUserDetailByUsernameLike(String username) throws IOException;
 
-//    UserResponseDto create() throws IOException;
+    /**
+     * Tạo User mới
+     * @param userRequestDto
+     * @return
+     * @throws IOException
+     */
+    UserResponseDto create(UserRequestDto userRequestDto) throws IOException;
 }

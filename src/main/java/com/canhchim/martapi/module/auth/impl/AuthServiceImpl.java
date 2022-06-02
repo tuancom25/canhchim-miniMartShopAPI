@@ -45,7 +45,7 @@ public class AuthServiceImpl implements IAuthService {
         String salt = admin.getAdminPassswordSalt();
         if (admin.getAdminPassword().equals(hashPassword(password, salt))) {
             //Login success
-            String accessToken = jwtUtil.generateToken(username, "ADMIN");
+            String accessToken = jwtUtil.generateToken(username, "ADMIN", 0);
             loginResponseDto.setAccessToken(accessToken);
             return loginResponseDto;
         }
@@ -80,7 +80,7 @@ public class AuthServiceImpl implements IAuthService {
             userResponseDto.setIpLastWork(user.getUserIPLastWork());
             userResponseDto.setFunctions(functions);
 
-            String accessToken = jwtUtil.generateToken(username, "SHOP");
+            String accessToken = jwtUtil.generateToken(username, "SHOP", user.getUserShop().getId());
             loginResponseDto.setUser(userResponseDto);
             loginResponseDto.setAccessToken(accessToken);
 

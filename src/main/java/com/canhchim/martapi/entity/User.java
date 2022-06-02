@@ -1,5 +1,5 @@
 /**
- * Author: Duong Ngo Nam Anh
+ * @author: Duong Ngo Nam Anh
  */
 
 package com.canhchim.martapi.entity;
@@ -42,8 +42,9 @@ public class User {
     @Column(name = "UserAddress", length = 150)
     private String userAddress;
 
-    @Column(name = "UserFunctionKey", length = 12)
-    private String userFunctionKey;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "UserShopId")
+    private Shop userShop;
 
     @Column(name = "UserLastTimeActive")
     private Instant userLastTimeActive;
@@ -143,12 +144,12 @@ public class User {
         this.userAddress = userAddress;
     }
 
-    public String getUserFunctionKey() {
-        return userFunctionKey;
+    public Shop getUserShop() {
+        return userShop;
     }
 
-    public void setUserFunctionKey(String userFunctionKey) {
-        this.userFunctionKey = userFunctionKey;
+    public void setUserShop(Shop userShop) {
+        this.userShop = userShop;
     }
 
     public Instant getUserLastTimeActive() {

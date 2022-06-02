@@ -21,9 +21,10 @@ public class JwtUtil {
     private final String JWT_SECRET = "66w94CaPsFS32124rSUZ5DpWduia16YSYNOvfb1eGmuMd8FeNg6iM6o5WoThV3SzT8M1C5M5smGP1PHz5VF8Jg166w94CaPsFS32124rSUZ5DpWduia16YSYNOvfb1eGmuMd8FeNg6iM6o5WoThV3SzT8M1C5M5smGP1PHz5VF";
     private final long JWT_EXPIRATION = 86400000L;
 
-    public String generateToken(String username, String type) throws Exception{
+    public String generateToken(String username, String type, Integer shopId) throws Exception{
         Map<String, Object> claims = new HashMap<>();
         claims.put("type", type);
+        claims.put("shopid", shopId);
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + JWT_EXPIRATION);
         return Jwts.builder()
@@ -41,6 +42,11 @@ public class JwtUtil {
     public String getAccountTyeFromToken(String token) {
         final Claims claims = getAllClaimsFromToken(token);
         return claims.get("type").toString();
+    }
+
+    public int getShopIdFromToken(String token) {
+        final Claims claims = getAllClaimsFromToken(token);
+        return Integer.parseInt(claims.get("shopid").toString());
     }
 
     public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
