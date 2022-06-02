@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public interface IUserService {
@@ -48,7 +49,7 @@ public interface IUserService {
      * @param username
      * @return
      */
-    User findByUsernameLike(String username);
+    User findByUsernameLike(String username) throws Exception;
 
     /**
      * Tìm User bằng Id
@@ -77,5 +78,11 @@ public interface IUserService {
      * @return
      * @throws IOException
      */
-    UserResponseDto create(UserRequestDto userRequestDto) throws IOException;
+    UserResponseDto create(UserRequestDto userRequestDto) throws IOException, NoSuchAlgorithmException;
+
+    /**
+     * Khóa tài khoản
+     * @param username
+     */
+    void ban(String username);
 }

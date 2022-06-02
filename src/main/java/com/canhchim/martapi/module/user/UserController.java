@@ -18,6 +18,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
 @RestController
@@ -45,7 +46,7 @@ public class UserController {
         return ResponseEntity.status(HttpServletResponse.SC_OK).body(responseDto);
     }
     @PostMapping("")
-    public ResponseEntity<?> create(@RequestBody UserRequestDto userRequestDto) throws IOException {
+    public ResponseEntity<?> create(@RequestBody UserRequestDto userRequestDto) throws IOException, NoSuchAlgorithmException {
         //Tạo user
         UserResponseDto userResponseDto = userService.create(userRequestDto);
         //Khởi tạo đối tượng Response
@@ -58,7 +59,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(HttpServletRequest request, @PathVariable Integer id, @RequestBody UserRequestDto userRequestDto) throws IOException {
+    public ResponseEntity<?> update(HttpServletRequest request, @PathVariable Integer id, @RequestBody UserRequestDto userRequestDto) throws IOException, NoSuchAlgorithmException {
         permissionUtil.acceptAction(request, "User", "userShop.id", "id", id);
 
         //Tạo user

@@ -1,5 +1,5 @@
 /**
- * Author: Duong Ngo Nam Anh
+ * @author: Duong Ngo Nam Anh
  */
 
 package com.canhchim.martapi.module.auth;
@@ -35,12 +35,13 @@ public class AuthController {
                     .body(loginResponseDto);
         }
         catch (Exception e) {
+            System.err.println(e);
             ErrorResponseDto errorResponseDto = new ErrorResponseDto();
 
             errorResponseDto.setTimestamp(new Date());
             errorResponseDto.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             errorResponseDto.setError("Unauthorized");
-            errorResponseDto.setMessage("Username or password incorrect!");
+            errorResponseDto.setMessage("Tài khoản hoặc mật khẩu không chính xác!");
             errorResponseDto.setPath(request.getRequestURI());
 
             return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED).body(errorResponseDto);
@@ -48,23 +49,10 @@ public class AuthController {
     }
 
     @PostMapping("/user/login")
-    public ResponseEntity<?> userLogin(@RequestBody LoginRequestDto loginRequestDto, HttpServletRequest request) {
-        try {
-            LoginResponseDto loginResponseDto = authService.loginUser(loginRequestDto.getUsername(), loginRequestDto.getPassword());
-            return ResponseEntity.status(HttpServletResponse.SC_OK)
-                    .header("Authorization", "Bearer " + loginResponseDto.getAccessToken())
-                    .body(loginResponseDto);
-        }
-        catch (Exception e) {
-            ErrorResponseDto errorResponseDto = new ErrorResponseDto();
-
-            errorResponseDto.setTimestamp(new Date());
-            errorResponseDto.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            errorResponseDto.setError("Unauthorized");
-            errorResponseDto.setMessage("Username or password incorrect!");
-            errorResponseDto.setPath(request.getRequestURI());
-
-            return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED).body(errorResponseDto);
-        }
+    public ResponseEntity<?> userLogin(@RequestBody LoginRequestDto loginRequestDto, HttpServletRequest request) throws Exception {
+        LoginResponseDto loginResponseDto = authService.loginUser(loginRequestDto.getUsername(), loginRequestDto.getPassword());
+        return ResponseEntity.status(HttpServletResponse.SC_OK)
+                .header("Authorization", "Bearer " + loginResponseDto.getAccessToken())
+                .body(loginResponseDto);
     }
 }
