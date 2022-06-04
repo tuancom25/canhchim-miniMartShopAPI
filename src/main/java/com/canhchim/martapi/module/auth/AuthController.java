@@ -22,18 +22,14 @@ import java.util.Date;
 public class AuthController {
     private final IAuthService authService;
 
-    public AuthController(IAuthService authService) {
-        this.authService = authService;
-    }
+   
 
     @PostMapping("/admin/login")
     public ResponseEntity<?> adminLogin(@RequestBody LoginRequestDto loginRequestDto, HttpServletRequest request) {
         try {
             LoginResponseDto loginResponseDto = authService.loginAdmin(loginRequestDto.getUsername(), loginRequestDto.getPassword());
             return ResponseEntity.status(HttpServletResponse.SC_OK)
-                    .header("Authorization", "Bearer " + loginResponseDto.getAccessToken())
-                    .body(loginResponseDto);
-        }
+                    .h
         catch (Exception e) {
             System.err.println(e);
             ErrorResponseDto errorResponseDto = new ErrorResponseDto();
