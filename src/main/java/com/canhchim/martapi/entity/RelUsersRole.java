@@ -3,26 +3,26 @@ package com.canhchim.martapi.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "roleofuser")
-public class RoleOfUser {
-    @EmbeddedId
-    private RoleOfUserId id;
+@Table(name = "rel_users_roles")
+public class RelUsersRole {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
-    @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "UserId", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @MapsId("roleId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "RoleId", nullable = false)
+    @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
-    public RoleOfUserId getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(RoleOfUserId id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -5,8 +5,8 @@
 package com.canhchim.martapi.module.auth;
 
 import com.canhchim.martapi.dto.ErrorResponseDto;
-import com.canhchim.martapi.dto.LoginRequestDto;
-import com.canhchim.martapi.dto.LoginResponseDto;
+import com.canhchim.martapi.dto.auth.LoginRequestDto;
+import com.canhchim.martapi.dto.auth.LoginResponseDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

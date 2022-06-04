@@ -8,60 +8,60 @@ import java.time.Instant;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "UserId", nullable = false)
+    @Column(name = "user_id", nullable = false)
     private Integer id;
 
-    @Column(name = "Username", nullable = false, length = 60)
+    @Column(name = "username", nullable = false, length = 60)
     private String username;
 
-    @Column(name = "UserFullName", nullable = false, length = 60)
-    private String userFullName;
+    @Column(name = "fullname", nullable = false, length = 60)
+    private String fullname;
 
-    @Column(name = "UserPhone", nullable = false, length = 12)
-    private String userPhone;
+    @Column(name = "phone", nullable = false, length = 12)
+    private String phone;
 
-    @Column(name = "UserEmail", length = 60)
-    private String userEmail;
+    @Column(name = "email", length = 60)
+    private String email;
 
-    @Column(name = "UserPassword", nullable = false, length = 64)
-    private String userPassword;
+    @Column(name = "password", nullable = false, length = 64)
+    private String password;
 
-    @Column(name = "UserPasswordSalt", nullable = false, length = 12)
-    private String userPasswordSalt;
+    @Column(name = "salt", nullable = false, length = 12)
+    private String salt;
 
-    @Column(name = "UserPassOtp", length = 12)
-    private String userPassOtp;
+    @Column(name = "otp", length = 12)
+    private String otp;
 
-    @Column(name = "UserCCCD", length = 12)
-    private String userCCCD;
+    @Column(name = "cccd", length = 12)
+    private String cccd;
 
-    @Column(name = "UserAddress", length = 150)
-    private String userAddress;
+    @Column(name = "address", length = 150)
+    private String address;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "UserShopId", nullable = false)
-    private Shop userShop;
+    @JoinColumn(name = "shop_id", nullable = false)
+    private Shop shop;
 
-    @Column(name = "UserLastTimeActive")
-    private Instant userLastTimeActive;
+    @Column(name = "last_time_active")
+    private Instant lastTimeActive;
 
-    @Column(name = "UserDuringTime")
-    private Integer userDuringTime;
+    @Column(name = "during_time")
+    private Integer duringTime;
 
-    @Column(name = "UserRSAPublic", length = 512)
-    private String userRSAPublic;
+    @Column(name = "public_key", length = 512)
+    private String publicKey;
 
-    @Column(name = "UserRSAPrivate", length = 1024)
-    private String userRSAPrivate;
+    @Column(name = "private_key", length = 1024)
+    private String privateKey;
 
-    @Column(name = "UserIPLastWork", length = 39)
-    private String userIPLastWork;
+    @Column(name = "ip_last_work", length = 39)
+    private String ipLastWork;
 
-    @Column(name = "UserDeviceList", length = 301)
-    private String userDeviceList;
+    @Column(name = "device_list", length = 301)
+    private String deviceList;
 
-    @Column(name = "UserType")
-    private Integer userType;
+    @Column(name = "actived", nullable = false)
+    private Boolean actived = false;
 
     public Integer getId() {
         return id;
@@ -79,132 +79,132 @@ public class User {
         this.username = username;
     }
 
-    public String getUserFullName() {
-        return userFullName;
+    public String getFullname() {
+        return fullname;
     }
 
-    public void setUserFullName(String userFullName) {
-        this.userFullName = userFullName;
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
-    public String getUserPhone() {
-        return userPhone;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setUserPhone(String userPhone) {
-        this.userPhone = userPhone;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getUserPassword() {
-        return userPassword;
+    public String getPassword() {
+        return password;
     }
 
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getUserPasswordSalt() {
-        return userPasswordSalt;
+    public String getSalt() {
+        return salt;
     }
 
-    public void setUserPasswordSalt(String userPasswordSalt) {
-        this.userPasswordSalt = userPasswordSalt;
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
-    public String getUserPassOtp() {
-        return userPassOtp;
+    public String getOtp() {
+        return otp;
     }
 
-    public void setUserPassOtp(String userPassOtp) {
-        this.userPassOtp = userPassOtp;
+    public void setOtp(String otp) {
+        this.otp = otp;
     }
 
-    public String getUserCCCD() {
-        return userCCCD;
+    public String getCccd() {
+        return cccd;
     }
 
-    public void setUserCCCD(String userCCCD) {
-        this.userCCCD = userCCCD;
+    public void setCccd(String cccd) {
+        this.cccd = cccd;
     }
 
-    public String getUserAddress() {
-        return userAddress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setUserAddress(String userAddress) {
-        this.userAddress = userAddress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public Shop getUserShop() {
-        return userShop;
+    public Shop getShop() {
+        return shop;
     }
 
-    public void setUserShop(Shop userShop) {
-        this.userShop = userShop;
+    public void setShop(Shop shop) {
+        this.shop = shop;
     }
 
-    public Instant getUserLastTimeActive() {
-        return userLastTimeActive;
+    public Instant getLastTimeActive() {
+        return lastTimeActive;
     }
 
-    public void setUserLastTimeActive(Instant userLastTimeActive) {
-        this.userLastTimeActive = userLastTimeActive;
+    public void setLastTimeActive(Instant lastTimeActive) {
+        this.lastTimeActive = lastTimeActive;
     }
 
-    public Integer getUserDuringTime() {
-        return userDuringTime;
+    public Integer getDuringTime() {
+        return duringTime;
     }
 
-    public void setUserDuringTime(Integer userDuringTime) {
-        this.userDuringTime = userDuringTime;
+    public void setDuringTime(Integer duringTime) {
+        this.duringTime = duringTime;
     }
 
-    public String getUserRSAPublic() {
-        return userRSAPublic;
+    public String getPublicKey() {
+        return publicKey;
     }
 
-    public void setUserRSAPublic(String userRSAPublic) {
-        this.userRSAPublic = userRSAPublic;
+    public void setPublicKey(String publicKey) {
+        this.publicKey = publicKey;
     }
 
-    public String getUserRSAPrivate() {
-        return userRSAPrivate;
+    public String getPrivateKey() {
+        return privateKey;
     }
 
-    public void setUserRSAPrivate(String userRSAPrivate) {
-        this.userRSAPrivate = userRSAPrivate;
+    public void setPrivateKey(String privateKey) {
+        this.privateKey = privateKey;
     }
 
-    public String getUserIPLastWork() {
-        return userIPLastWork;
+    public String getIpLastWork() {
+        return ipLastWork;
     }
 
-    public void setUserIPLastWork(String userIPLastWork) {
-        this.userIPLastWork = userIPLastWork;
+    public void setIpLastWork(String ipLastWork) {
+        this.ipLastWork = ipLastWork;
     }
 
-    public String getUserDeviceList() {
-        return userDeviceList;
+    public String getDeviceList() {
+        return deviceList;
     }
 
-    public void setUserDeviceList(String userDeviceList) {
-        this.userDeviceList = userDeviceList;
+    public void setDeviceList(String deviceList) {
+        this.deviceList = deviceList;
     }
 
-    public Integer getUserType() {
-        return userType;
+    public Boolean getActived() {
+        return actived;
     }
 
-    public void setUserType(Integer userType) {
-        this.userType = userType;
+    public void setActived(Boolean actived) {
+        this.actived = actived;
     }
 
 }

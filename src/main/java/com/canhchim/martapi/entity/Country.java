@@ -3,11 +3,11 @@ package com.canhchim.martapi.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "product_types")
-public class ProductType {
+@Table(name = "countries")
+public class Country {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_type_id", nullable = false)
+    @Column(name = "country_id", nullable = false)
     private Integer id;
 
     @Column(name = "name", nullable = false, length = 60)
@@ -15,10 +15,6 @@ public class ProductType {
 
     @Column(name = "code", nullable = false)
     private Integer code;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "shop_id", nullable = false)
-    private Shop shop;
 
     public Integer getId() {
         return id;
@@ -42,14 +38,6 @@ public class ProductType {
 
     public void setCode(Integer code) {
         this.code = code;
-    }
-
-    public Shop getShop() {
-        return shop;
-    }
-
-    public void setShop(Shop shop) {
-        this.shop = shop;
     }
 
 }

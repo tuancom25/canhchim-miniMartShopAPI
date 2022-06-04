@@ -1,4 +1,4 @@
-package com.canhchim.martapi.dto;
+package com.canhchim.martapi.dto.user;
 
 import lombok.Data;
 
@@ -13,7 +13,6 @@ public class UserResponseDto {
     private String email;
     private String cccd;
     private String address;
-    private RSADto rsa;
+    private String publicKey;
     private String ipLastWork;
-    private List<String> functions;
 }

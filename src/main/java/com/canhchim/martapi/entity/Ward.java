@@ -3,22 +3,21 @@ package com.canhchim.martapi.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "product_types")
-public class ProductType {
+@Table(name = "wards")
+public class Ward {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_type_id", nullable = false)
+    @Column(name = "ward_id", nullable = false)
     private Integer id;
 
-    @Column(name = "name", nullable = false, length = 60)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "code", nullable = false)
     private Integer code;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "shop_id", nullable = false)
-    private Shop shop;
+    @Column(name = "type", nullable = false)
+    private Boolean type = false;
 
     public Integer getId() {
         return id;
@@ -44,12 +43,12 @@ public class ProductType {
         this.code = code;
     }
 
-    public Shop getShop() {
-        return shop;
+    public Boolean getType() {
+        return type;
     }
 
-    public void setShop(Shop shop) {
-        this.shop = shop;
+    public void setType(Boolean type) {
+        this.type = type;
     }
 
 }

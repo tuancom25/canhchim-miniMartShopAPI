@@ -2,7 +2,11 @@
 <project version="4">
   <component name="JpaBuddyIdeaProjectConfig">
     <option name="defaultUnitInitialized" value="true" />
+<<<<<<< Updated upstream
     <option name="reverseEngineeringLastDbConnectionId" value="6537b1ed-9b1c-4682-b282-15e6ae497dd4" />
+=======
+    <option name="reverseEngineeringLastDbConnectionId" value="7f22ad66-967e-46fd-baea-1c7c42e8f07e" />
+>>>>>>> Stashed changes
     <option name="reLastEntityCreationPackage" value="src/main/java/com/canhchim/martapi/entity" />
     <option name="reIgnoreSlowDbConnections">
       <ignoreDs id="3b9a4e1e-4332-403a-9dcb-6bdce73eea17" />

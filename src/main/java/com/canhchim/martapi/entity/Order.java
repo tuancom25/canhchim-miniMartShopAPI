@@ -1,111 +1,92 @@
 package com.canhchim.martapi.entity;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
+import java.time.Instant;
 
 @Entity
-@Table(name = "Orders")
+@Table(name = "orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "OrderId", nullable = false)
-    private Integer id;
+    @Column(name = "order_id", nullable = false)
+    private Long id;
 
-    @Column(name = "OrderCode", length = 40)
+    @Column(name = "order_code", nullable = false, length = 40)
     private String orderCode;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "UserId")
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CustomerId")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
-    @Column(name = "OrderDate1", length = 40)
-    private String orderDate1;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    @Column(name = "OrderDate2")
-    private Integer orderDate2;
+    @Column(name = "date1", nullable = false, length = 40)
+    private String date1;
 
-    @Column(name = "OrderTotalMoney", precision = 10)
-    private BigDecimal orderTotalMoney;
+    @Column(name = "date2", nullable = false)
+    private Instant date2;
 
-    @Column(name = "OrderMoneyType")
-    private Integer orderMoneyType;
+    @Column(name = "total_money", nullable = false)
+    private Integer totalMoney;
 
-    @Column(name = "OrderGetMoney")
-    private Integer orderGetMoney;
+    @Column(name = "money_type", nullable = false)
+    private Integer moneyType;
 
-    @Column(name = "OrderRejectMoney")
-    private Integer orderRejectMoney;
+    @Column(name = "get_money", nullable = false)
+    private Integer getMoney;
 
-    @Column(name = "OrderCustomerName", length = 60)
-    private String orderCustomerName;
+    @Column(name = "reject_money", nullable = false)
+    private Integer rejectMoney;
 
-    @Column(name = "OrderCutomerPhone", length = 13)
-    private String orderCutomerPhone;
+    @Column(name = "customer_name", nullable = false, length = 60)
+    private String customerName;
 
-    @Column(name = "OrderStatusPay")
-    private Integer orderStatusPay;
+    @Column(name = "customer_phone", nullable = false, length = 12)
+    private String customerPhone;
 
-    @Column(name = "OrderStatusShip")
-    private Integer orderStatusShip;
+    @Column(name = "status_pay", nullable = false)
+    private Boolean statusPay = false;
 
-    @Column(name = "OrderStatusShipComment", nullable = false, length = 120)
-    private String orderStatusShipComment;
+    @Column(name = "status_ship", nullable = false)
+    private Boolean statusShip = false;
 
-    @Column(name = "OrderType")
-    private Integer orderType;
+    @Column(name = "status_ship_comment", nullable = false, length = 120)
+    private String statusShipComment;
 
-    @Column(name = "OrderPayType")
-    private Integer orderPayType;
+    @Column(name = "type", nullable = false)
+    private Boolean type = false;
 
-    @Column(name = "CusstomerAdrress", length = 120)
+    @Column(name = "pay_type", nullable = false)
+    private Boolean payType = false;
+
+    @Column(name = "cusstomer_adrress", nullable = false, length = 120)
     private String cusstomerAdrress;
 
-    @Column(name = "CustomerAddress2", length = 120)
-    private String customerAddress2;
+    @Column(name = "cusstomer_adrress2", nullable = false, length = 120)
+    private String cusstomerAdrress2;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ShopId")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "shop_id", nullable = false)
     private Shop shop;
 
-    @Column(name = "ShipperId")
-    private Integer shipperId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "shipper_id", nullable = false)
+    private Shipper shipper;
 
-    @Column(name = "ShippComapnyId")
-    private Integer shippComapnyId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "ship_company_id", nullable = false)
+    private ShipCompany shipCompany;
 
-    @Column(name = "TableZoneId")
-    private Integer tableZoneId;
-
-    @Column(name = "TableCount")
-    private Integer tableCount;
-
-    @Column(name = "CustomerCount")
-    private Integer customerCount;
-
-    @Column(name = "CustomerExpand")
-    private Integer customerExpand;
-
-    @Column(name = "OrderTableCode")
-    private Integer orderTableCode;
-
-    @Column(name = "OrderDayIndex")
-    private Integer orderDayIndex;
-
-    @Column(name = "OrderComment", length = 120)
+    @Column(name = "order_comment", nullable = false, length = 120)
     private String orderComment;
 
-    @Column(name = "OrderPrintCounter", length = 120)
-    private String orderPrintCounter;
-
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -117,14 +98,6 @@ public class Order {
         this.orderCode = orderCode;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public Customer getCustomer() {
         return customer;
     }
@@ -133,108 +106,116 @@ public class Order {
         this.customer = customer;
     }
 
-    public String getOrderDate1() {
-        return orderDate1;
+    public User getUser() {
+        return user;
     }
 
-    public void setOrderDate1(String orderDate1) {
-        this.orderDate1 = orderDate1;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public Integer getOrderDate2() {
-        return orderDate2;
+    public String getDate1() {
+        return date1;
     }
 
-    public void setOrderDate2(Integer orderDate2) {
-        this.orderDate2 = orderDate2;
+    public void setDate1(String date1) {
+        this.date1 = date1;
     }
 
-    public BigDecimal getOrderTotalMoney() {
-        return orderTotalMoney;
+    public Instant getDate2() {
+        return date2;
     }
 
-    public void setOrderTotalMoney(BigDecimal orderTotalMoney) {
-        this.orderTotalMoney = orderTotalMoney;
+    public void setDate2(Instant date2) {
+        this.date2 = date2;
     }
 
-    public Integer getOrderMoneyType() {
-        return orderMoneyType;
+    public Integer getTotalMoney() {
+        return totalMoney;
     }
 
-    public void setOrderMoneyType(Integer orderMoneyType) {
-        this.orderMoneyType = orderMoneyType;
+    public void setTotalMoney(Integer totalMoney) {
+        this.totalMoney = totalMoney;
     }
 
-    public Integer getOrderGetMoney() {
-        return orderGetMoney;
+    public Integer getMoneyType() {
+        return moneyType;
     }
 
-    public void setOrderGetMoney(Integer orderGetMoney) {
-        this.orderGetMoney = orderGetMoney;
+    public void setMoneyType(Integer moneyType) {
+        this.moneyType = moneyType;
     }
 
-    public Integer getOrderRejectMoney() {
-        return orderRejectMoney;
+    public Integer getGetMoney() {
+        return getMoney;
     }
 
-    public void setOrderRejectMoney(Integer orderRejectMoney) {
-        this.orderRejectMoney = orderRejectMoney;
+    public void setGetMoney(Integer getMoney) {
+        this.getMoney = getMoney;
     }
 
-    public String getOrderCustomerName() {
-        return orderCustomerName;
+    public Integer getRejectMoney() {
+        return rejectMoney;
     }
 
-    public void setOrderCustomerName(String orderCustomerName) {
-        this.orderCustomerName = orderCustomerName;
+    public void setRejectMoney(Integer rejectMoney) {
+        this.rejectMoney = rejectMoney;
     }
 
-    public String getOrderCutomerPhone() {
-        return orderCutomerPhone;
+    public String getCustomerName() {
+        return customerName;
     }
 
-    public void setOrderCutomerPhone(String orderCutomerPhone) {
-        this.orderCutomerPhone = orderCutomerPhone;
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
-    public Integer getOrderStatusPay() {
-        return orderStatusPay;
+    public String getCustomerPhone() {
+        return customerPhone;
     }
 
-    public void setOrderStatusPay(Integer orderStatusPay) {
-        this.orderStatusPay = orderStatusPay;
+    public void setCustomerPhone(String customerPhone) {
+        this.customerPhone = customerPhone;
     }
 
-    public Integer getOrderStatusShip() {
-        return orderStatusShip;
+    public Boolean getStatusPay() {
+        return statusPay;
     }
 
-    public void setOrderStatusShip(Integer orderStatusShip) {
-        this.orderStatusShip = orderStatusShip;
+    public void setStatusPay(Boolean statusPay) {
+        this.statusPay = statusPay;
     }
 
-    public String getOrderStatusShipComment() {
-        return orderStatusShipComment;
+    public Boolean getStatusShip() {
+        return statusShip;
     }
 
-    public void setOrderStatusShipComment(String orderStatusShipComment) {
-        this.orderStatusShipComment = orderStatusShipComment;
+    public void setStatusShip(Boolean statusShip) {
+        this.statusShip = statusShip;
     }
 
-    public Integer getOrderType() {
-        return orderType;
+    public String getStatusShipComment() {
+        return statusShipComment;
     }
 
-    public void setOrderType(Integer orderType) {
-        this.orderType = orderType;
+    public void setStatusShipComment(String statusShipComment) {
+        this.statusShipComment = statusShipComment;
     }
 
-    public Integer getOrderPayType() {
-        return orderPayType;
+    public Boolean getType() {
+        return type;
     }
 
-    public void setOrderPayType(Integer orderPayType) {
-        this.orderPayType = orderPayType;
+    public void setType(Boolean type) {
+        this.type = type;
+    }
+
+    public Boolean getPayType() {
+        return payType;
+    }
+
+    public void setPayType(Boolean payType) {
+        this.payType = payType;
     }
 
     public String getCusstomerAdrress() {
@@ -245,12 +226,12 @@ public class Order {
         this.cusstomerAdrress = cusstomerAdrress;
     }
 
-    public String getCustomerAddress2() {
-        return customerAddress2;
+    public String getCusstomerAdrress2() {
+        return cusstomerAdrress2;
     }
 
-    public void setCustomerAddress2(String customerAddress2) {
-        this.customerAddress2 = customerAddress2;
+    public void setCusstomerAdrress2(String cusstomerAdrress2) {
+        this.cusstomerAdrress2 = cusstomerAdrress2;
     }
 
     public Shop getShop() {
@@ -261,68 +242,20 @@ public class Order {
         this.shop = shop;
     }
 
-    public Integer getShipperId() {
-        return shipperId;
+    public Shipper getShipper() {
+        return shipper;
     }
 
-    public void setShipperId(Integer shipperId) {
-        this.shipperId = shipperId;
+    public void setShipper(Shipper shipper) {
+        this.shipper = shipper;
     }
 
-    public Integer getShippComapnyId() {
-        return shippComapnyId;
+    public ShipCompany getShipCompany() {
+        return shipCompany;
     }
 
-    public void setShippComapnyId(Integer shippComapnyId) {
-        this.shippComapnyId = shippComapnyId;
-    }
-
-    public Integer getTableZoneId() {
-        return tableZoneId;
-    }
-
-    public void setTableZoneId(Integer tableZoneId) {
-        this.tableZoneId = tableZoneId;
-    }
-
-    public Integer getTableCount() {
-        return tableCount;
-    }
-
-    public void setTableCount(Integer tableCount) {
-        this.tableCount = tableCount;
-    }
-
-    public Integer getCustomerCount() {
-        return customerCount;
-    }
-
-    public void setCustomerCount(Integer customerCount) {
-        this.customerCount = customerCount;
-    }
-
-    public Integer getCustomerExpand() {
-        return customerExpand;
-    }
-
-    public void setCustomerExpand(Integer customerExpand) {
-        this.customerExpand = customerExpand;
-    }
-
-    public Integer getOrderTableCode() {
-        return orderTableCode;
-    }
-
-    public void setOrderTableCode(Integer orderTableCode) {
-        this.orderTableCode = orderTableCode;
-    }
-
-    public Integer getOrderDayIndex() {
-        return orderDayIndex;
-    }
-
-    public void setOrderDayIndex(Integer orderDayIndex) {
-        this.orderDayIndex = orderDayIndex;
+    public void setShipCompany(ShipCompany shipCompany) {
+        this.shipCompany = shipCompany;
     }
 
     public String getOrderComment() {
@@ -331,14 +264,6 @@ public class Order {
 
     public void setOrderComment(String orderComment) {
         this.orderComment = orderComment;
-    }
-
-    public String getOrderPrintCounter() {
-        return orderPrintCounter;
-    }
-
-    public void setOrderPrintCounter(String orderPrintCounter) {
-        this.orderPrintCounter = orderPrintCounter;
     }
 
 }

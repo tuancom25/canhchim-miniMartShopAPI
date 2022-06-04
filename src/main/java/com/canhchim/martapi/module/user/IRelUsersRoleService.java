@@ -6,7 +6,7 @@ package com.canhchim.martapi.module.user;
 
 import java.util.List;
 
-public interface IRoleOfUserService {
+public interface IRelUsersRoleService {
     /**
      * Tìm danh sách Role id bằng UserId
      * @param userId

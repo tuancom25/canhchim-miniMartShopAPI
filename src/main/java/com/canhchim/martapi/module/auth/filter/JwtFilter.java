@@ -1,6 +1,6 @@
 package com.canhchim.martapi.module.auth.filter;
 
-import com.canhchim.martapi.dto.UserDetailDto;
+import com.canhchim.martapi.dto.user.UserDetailDto;
 import com.canhchim.martapi.entity.Admin;
 import com.canhchim.martapi.module.admin.IAdminService;
 import com.canhchim.martapi.module.user.IUserService;
@@ -89,7 +89,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private UserDetails initUserDetailsFromAdmin(String username) throws IOException {
         Admin user = this.adminService.findByAdminNameLike(username);
-        String password = user.getAdminPassword();
+        String password = user.getPassword();
         Collection<GrantedAuthority> roles = new HashSet<>();
         UserDetails userDetails = new org.springframework.security.core.userdetails.User(username, password, roles);
         return userDetails;
@@ -97,7 +97,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private UserDetails initUserDetailsFromUser(String username) throws IOException {
         UserDetailDto user = this.userService.findUserDetailByUsernameLike(username);
-        String password = user.getUserPassword();
+        String password = user.getPassword();
         Collection<GrantedAuthority> roles = new HashSet<>();
         for (String function: user.getFunctions()) {
             roles.add(new SimpleGrantedAuthority(function));

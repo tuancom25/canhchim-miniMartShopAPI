@@ -3,24 +3,21 @@ package com.canhchim.martapi.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "customers")
-public class Customer {
+@Table(name = "ship_companies")
+public class ShipCompany {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "customer_id", nullable = false)
+    @Column(name = "ship_company_id", nullable = false)
     private Integer id;
+
+    @Column(name = "name", nullable = false, length = 60)
+    private String name;
 
     @Column(name = "phone", nullable = false, length = 12)
     private String phone;
 
-    @Column(name = "name", length = 60)
-    private String name;
-
     @Column(name = "address", length = 120)
     private String address;
-
-    @Column(name = "`like`")
-    private Integer like;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "shop_id", nullable = false)
@@ -34,14 +31,6 @@ public class Customer {
         this.id = id;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
     public String getName() {
         return name;
     }
@@ -50,20 +39,20 @@ public class Customer {
         this.name = name;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public String getAddress() {
         return address;
     }
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public Integer getLike() {
-        return like;
-    }
-
-    public void setLike(Integer like) {
-        this.like = like;
     }
 
     public Shop getShop() {
