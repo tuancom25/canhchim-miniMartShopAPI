@@ -1,4 +1,4 @@
-package com.canhchim.martapi.dto;
+package com.canhchim.martapi.dto.auth;
 
 import lombok.Data;
 

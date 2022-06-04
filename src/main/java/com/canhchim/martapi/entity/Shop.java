@@ -4,73 +4,58 @@ import javax.persistence.*;
 import java.time.Instant;
 
 @Entity
-@Table(name = "shop")
+@Table(name = "shops")
 public class Shop {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "shop_id", nullable = false)
     private Integer id;
 
-    @Column(name = "name", nullable = false, length = 50)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "address_gps_longtitude")
-    private Double addressGpsLongtitude;
+    @Column(name = "gps_long")
+    private Integer gpsLong;
 
-    @Column(name = "address_gps_latitude")
-    private Double addressGpsLatitude;
-
-    @Column(name = "address_national", length = 100)
-    private String addressNational;
-
-    @Column(name = "address_province_city", length = 100)
-    private String addressProvinceCity;
-
-    @Column(name = "address_district", length = 100)
-    private String addressDistrict;
-
-    @Column(name = "address_wards", length = 100)
-    private String addressWards;
-
-    @Column(name = "address_street", nullable = false, length = 50)
-    private String addressStreet;
-
-    @Column(name = "address_national_code", length = 50)
-    private String addressNationalCode;
-
-    @ManyToOne
-    @JoinColumn(name = "company_id")
-    private Company company;
-
-    @Column(name = "address_full", nullable = false, length = 50)
-    private String addressFull;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "shop_brand_id")
-    private ShopBrand shopBrand;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "shop_type_id")
-    private ShopType shopType;
+    @Column(name = "gps_lat")
+    private Integer gpsLat;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "contry_id", nullable = false)
+    private Country contry;
 
-    @Column(name = "date_time_1")
-    private Instant dateTime1;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "province_id", nullable = false)
+    private Province province;
 
-    @Column(name = "date_time_2")
-    private Instant dateTime2;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "district_id", nullable = false)
+    private District district;
 
-    @Column(name = "rsa_private", length = 512)
-    private String rsaPrivate;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "ward_id", nullable = false)
+    private Ward ward;
 
-    @Column(name = "sra_public", length = 1024)
-    private String sraPublic;
+    @Column(name = "address", nullable = false, length = 256)
+    private String address;
 
-    @Column(name = "key_salt", length = 12)
-    private String keySalt;
+    @Column(name = "brand_name", length = 60)
+    private String brandName;
+
+    @Column(name = "public_key", nullable = false, length = 512)
+    private String publicKey;
+
+    @Column(name = "private_key", nullable = false, length = 1024)
+    private String privateKey;
+
+    @Column(name = "salt", nullable = false, length = 12)
+    private String salt;
+
+    @Column(name = "created_at", nullable = false)
+    private Instant createdAt;
+
+    @Column(name = "updated_at", nullable = false)
+    private Instant updatedAt;
 
     public Integer getId() {
         return id;
@@ -88,148 +73,108 @@ public class Shop {
         this.name = name;
     }
 
-    public Double getAddressGpsLongtitude() {
-        return addressGpsLongtitude;
+    public Integer getGpsLong() {
+        return gpsLong;
     }
 
-    public void setAddressGpsLongtitude(Double addressGpsLongtitude) {
-        this.addressGpsLongtitude = addressGpsLongtitude;
+    public void setGpsLong(Integer gpsLong) {
+        this.gpsLong = gpsLong;
     }
 
-    public Double getAddressGpsLatitude() {
-        return addressGpsLatitude;
+    public Integer getGpsLat() {
+        return gpsLat;
     }
 
-    public void setAddressGpsLatitude(Double addressGpsLatitude) {
-        this.addressGpsLatitude = addressGpsLatitude;
+    public void setGpsLat(Integer gpsLat) {
+        this.gpsLat = gpsLat;
     }
 
-    public String getAddressNational() {
-        return addressNational;
+    public Country getContry() {
+        return contry;
     }
 
-    public void setAddressNational(String addressNational) {
-        this.addressNational = addressNational;
+    public void setContry(Country contry) {
+        this.contry = contry;
     }
 
-    public String getAddressProvinceCity() {
-        return addressProvinceCity;
+    public Province getProvince() {
+        return province;
     }
 
-    public void setAddressProvinceCity(String addressProvinceCity) {
-        this.addressProvinceCity = addressProvinceCity;
+    public void setProvince(Province province) {
+        this.province = province;
     }
 
-    public String getAddressDistrict() {
-        return addressDistrict;
+    public District getDistrict() {
+        return district;
     }
 
-    public void setAddressDistrict(String addressDistrict) {
-        this.addressDistrict = addressDistrict;
+    public void setDistrict(District district) {
+        this.district = district;
     }
 
-    public String getAddressWards() {
-        return addressWards;
+    public Ward getWard() {
+        return ward;
     }
 
-    public void setAddressWards(String addressWards) {
-        this.addressWards = addressWards;
+    public void setWard(Ward ward) {
+        this.ward = ward;
     }
 
-    public String getAddressStreet() {
-        return addressStreet;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAddressStreet(String addressStreet) {
-        this.addressStreet = addressStreet;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getAddressNationalCode() {
-        return addressNationalCode;
+    public String getBrandName() {
+        return brandName;
     }
 
-    public void setAddressNationalCode(String addressNationalCode) {
-        this.addressNationalCode = addressNationalCode;
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
     }
 
-    public Company getCompany() {
-        return company;
+    public String getPublicKey() {
+        return publicKey;
     }
 
-    public void setCompany(Company company) {
-        this.company = company;
+    public void setPublicKey(String publicKey) {
+        this.publicKey = publicKey;
     }
 
-    public String getAddressFull() {
-        return addressFull;
+    public String getPrivateKey() {
+        return privateKey;
     }
 
-    public void setAddressFull(String addressFull) {
-        this.addressFull = addressFull;
+    public void setPrivateKey(String privateKey) {
+        this.privateKey = privateKey;
     }
 
-    public ShopBrand getShopBrand() {
-        return shopBrand;
+    public String getSalt() {
+        return salt;
     }
 
-    public void setShopBrand(ShopBrand shopBrand) {
-        this.shopBrand = shopBrand;
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
-    public ShopType getShopType() {
-        return shopType;
+    public Instant getCreatedAt() {
+        return createdAt;
     }
 
-    public void setShopType(ShopType shopType) {
-        this.shopType = shopType;
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public User getUser() {
-        return user;
+    public Instant getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Instant getDateTime1() {
-        return dateTime1;
-    }
-
-    public void setDateTime1(Instant dateTime1) {
-        this.dateTime1 = dateTime1;
-    }
-
-    public Instant getDateTime2() {
-        return dateTime2;
-    }
-
-    public void setDateTime2(Instant dateTime2) {
-        this.dateTime2 = dateTime2;
-    }
-
-    public String getRsaPrivate() {
-        return rsaPrivate;
-    }
-
-    public void setRsaPrivate(String rsaPrivate) {
-        this.rsaPrivate = rsaPrivate;
-    }
-
-    public String getSraPublic() {
-        return sraPublic;
-    }
-
-    public void setSraPublic(String sraPublic) {
-        this.sraPublic = sraPublic;
-    }
-
-    public String getKeySalt() {
-        return keySalt;
-    }
-
-    public void setKeySalt(String keySalt) {
-        this.keySalt = keySalt;
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
 }

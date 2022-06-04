@@ -3,15 +3,15 @@ package com.canhchim.martapi.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "roles")
-public class Role {
+@Table(name = "product_units")
+public class ProductUnit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "role_id", nullable = false)
+    @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "name", nullable = false, length = 60)
-    private String name;
+    @Column(name = "name", nullable = false)
+    private Integer name;
 
     public Integer getId() {
         return id;
@@ -21,11 +21,11 @@ public class Role {
         this.id = id;
     }
 
-    public String getName() {
+    public Integer getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(Integer name) {
         this.name = name;
     }
 

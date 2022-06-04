@@ -1,28 +1,25 @@
 package com.canhchim.martapi.entity;
 
-import lombok.Data;
-
 import javax.persistence.*;
 
 @Entity
-@Data
-@Table(name = "categoryProduct")
+@Table(name = "category_products")
 public class CategoryProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "category_product_id", nullable = false)
     private Integer id;
 
     @Column(name = "name", nullable = false, length = 60)
     private String name;
 
-    @Column(name = "code_parent")
-    private Integer codeParent;
+    @Column(name = "category_product_parent")
+    private Integer categoryProductParent;
 
-    @Column(name = "comment", length = 300)
+    @Column(name = "comment", nullable = false, length = 300)
     private String comment;
 
-    @Column(name = "img_link", length = 200)
+    @Column(name = "img_link", nullable = false, length = 200)
     private String imgLink;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -45,12 +42,12 @@ public class CategoryProduct {
         this.name = name;
     }
 
-    public Integer getCodeParent() {
-        return codeParent;
+    public Integer getCategoryProductParent() {
+        return categoryProductParent;
     }
 
-    public void setCodeParent(Integer codeParent) {
-        this.codeParent = codeParent;
+    public void setCategoryProductParent(Integer categoryProductParent) {
+        this.categoryProductParent = categoryProductParent;
     }
 
     public String getComment() {

@@ -1,7 +1,3 @@
-/**
- * Author: Duong Ngo Nam Anh
- */
-
 package com.canhchim.martapi.entity;
 
 import javax.persistence.*;
@@ -11,19 +7,19 @@ import javax.persistence.*;
 public class Function {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "FunctionId", nullable = false)
+    @Column(name = "function_id", nullable = false)
     private Integer id;
 
-    @Column(name = "FunctionName", nullable = false, length = 60)
-    private String functionName;
+    @Column(name = "name", nullable = false, length = 60)
+    private String name;
 
-    @Column(name = "FunctionComment", nullable = false, length = 120)
-    private String functionComment;
+    @Column(name = "comment", nullable = false, length = 120)
+    private String comment;
 
-    @Column(name = "FunctionClass", nullable = false, length = 60)
-    private String functionClass;
+    @Column(name = "class", nullable = false, length = 60)
+    private String _class;
 
-    @Column(name = "FunctionKey", nullable = false, length = 12)
+    @Column(name = "function_key", nullable = false, length = 12)
     private String functionKey;
 
     public Integer getId() {
@@ -34,28 +30,28 @@ public class Function {
         this.id = id;
     }
 
-    public String getFunctionName() {
-        return functionName;
+    public String getName() {
+        return name;
     }
 
-    public void setFunctionName(String functionName) {
-        this.functionName = functionName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getFunctionComment() {
-        return functionComment;
+    public String getComment() {
+        return comment;
     }
 
-    public void setFunctionComment(String functionComment) {
-        this.functionComment = functionComment;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
-    public String getFunctionClass() {
-        return functionClass;
+    public String get_class() {
+        return _class;
     }
 
-    public void setFunctionClass(String functionClass) {
-        this.functionClass = functionClass;
+    public void set_class(String _class) {
+        this._class = _class;
     }
 
     public String getFunctionKey() {

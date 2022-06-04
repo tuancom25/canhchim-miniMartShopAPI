@@ -3,19 +3,21 @@ package com.canhchim.martapi.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "category_groups")
-public class CategoryGroup {
+@Table(name = "provinces")
+public class Province {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_group_id", nullable = false)
+    @Column(name = "province_id", nullable = false)
     private Integer id;
 
     @Column(name = "name", nullable = false, length = 60)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "shop_id", nullable = false)
-    private Shop shop;
+    @Column(name = "code", nullable = false, length = 12)
+    private String code;
+
+    @Column(name = "type", nullable = false)
+    private Boolean type = false;
 
     public Integer getId() {
         return id;
@@ -33,12 +35,20 @@ public class CategoryGroup {
         this.name = name;
     }
 
-    public Shop getShop() {
-        return shop;
+    public String getCode() {
+        return code;
     }
 
-    public void setShop(Shop shop) {
-        this.shop = shop;
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public Boolean getType() {
+        return type;
+    }
+
+    public void setType(Boolean type) {
+        this.type = type;
     }
 
 }

@@ -1,15 +1,14 @@
 package com.canhchim.martapi.module.auth.impl;
 
-import com.canhchim.martapi.dto.LoginResponseDto;
+import com.canhchim.martapi.dto.auth.LoginResponseDto;
 import com.canhchim.martapi.dto.RSADto;
-import com.canhchim.martapi.dto.UserResponseDto;
+import com.canhchim.martapi.dto.auth.UserLoginResponseDto;
 import com.canhchim.martapi.entity.Admin;
 import com.canhchim.martapi.entity.User;
 import com.canhchim.martapi.module.admin.IAdminService;
 import com.canhchim.martapi.module.auth.IAuthService;
-import com.canhchim.martapi.module.role.IFunctionAndRoleService;
-import com.canhchim.martapi.module.role.IRoleService;
-import com.canhchim.martapi.module.user.IRoleOfUserService;
+import com.canhchim.martapi.module.role.IRelFunctionsRoleService;
+import com.canhchim.martapi.module.user.IRelUsersRoleService;
 import com.canhchim.martapi.module.user.IUserService;
 import com.canhchim.martapi.util.JwtUtil;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -26,15 +25,15 @@ public class AuthServiceImpl implements IAuthService {
     private IAdminService adminService;
 
     private IUserService userService;
-    private IRoleOfUserService roleOfUserService;
-    private IFunctionAndRoleService functionAndRoleService;
+    private IRelUsersRoleService roleOfUserService;
+    private IRelFunctionsRoleService relFunctionsRoleService;
 
-    public AuthServiceImpl(JwtUtil jwtUtil, IAdminService adminService, IUserService userService, IRoleOfUserService roleOfUserService, IFunctionAndRoleService functionAndRoleService) {
+    public AuthServiceImpl(JwtUtil jwtUtil, IAdminService adminService, IUserService userService, IRelUsersRoleService roleOfUserService, IRelFunctionsRoleService relFunctionsRoleService) {
         this.jwtUtil = jwtUtil;
         this.adminService = adminService;
         this.userService = userService;
         this.roleOfUserService = roleOfUserService;
-        this.functionAndRoleService = functionAndRoleService;
+        this.relFunctionsRoleService = relFunctionsRoleService;
     }
 
     @Override
@@ -42,10 +41,10 @@ public class AuthServiceImpl implements IAuthService {
         LoginResponseDto loginResponseDto = new LoginResponseDto();
 
         Admin admin = adminService.findByAdminNameLike(username);
-        String salt = admin.getAdminPassswordSalt();
-        if (admin.getAdminPassword().equals(hashPassword(password, salt))) {
+        String salt = admin.getSalt();
+        if (admin.getPassword().equals(hashPassword(password, salt))) {
             //Login success
-            String accessToken = jwtUtil.generateToken(username, "ADMIN");
+            String accessToken = jwtUtil.generateToken(username, "ADMIN", 0);
             loginResponseDto.setAccessToken(accessToken);
             return loginResponseDto;
         }
@@ -54,39 +53,42 @@ public class AuthServiceImpl implements IAuthService {
 
     @Override
     public LoginResponseDto loginUser(String username, String password) throws Exception {
-        LoginResponseDto loginResponseDto = new LoginResponseDto();
-
+        //Tìm User
         User user = userService.findByUsernameLike(username);
-        String salt = user.getUserPasswordSalt();
-        if (user.getUserPassword().equals(hashPassword(password, salt))) {
+        System.out.println(user);
+        //Kiểm tra user có tồn tại trong DB?
+        if (user == null) throw new Exception("Tài khoản hoặc mật khẩu không chính xác!");
+        String salt = user.getSalt();
+        if (user.getPassword().equals(hashPassword(password, salt))) {
             //Login success
-            UserResponseDto userResponseDto = new UserResponseDto();
+            LoginResponseDto loginResponseDto = new LoginResponseDto();
+            UserLoginResponseDto userLoginResponseDto = new UserLoginResponseDto();
             RSADto rsaDto = new RSADto();
             List<Integer> roles = roleOfUserService.findRoleIdsByUser_id(user.getId());
             List<String> functions = new ArrayList<>();
 
             for (Integer roleId: roles) {
-                for (String function: functionAndRoleService.findFunction_IdByRole_Id(roleId)) functions.add(function);
+                for (String function: relFunctionsRoleService.findFunction_IdByRole_Id(roleId)) functions.add(function);
             }
 
-            userResponseDto.setId(user.getId());
-            userResponseDto.setUsername(user.getUsername());
-            userResponseDto.setFullname(user.getUserFullName());
-            userResponseDto.setPhone(user.getUserPhone());
-            userResponseDto.setEmail(user.getUserEmail());
-            userResponseDto.setCccd(user.getUserCCCD());
-            userResponseDto.setAddress(user.getUserAddress());
-            userResponseDto.setRsa(rsaDto);
-            userResponseDto.setIpLastWork(user.getUserIPLastWork());
-            userResponseDto.setFunctions(functions);
+            userLoginResponseDto.setId(user.getId());
+            userLoginResponseDto.setUsername(user.getUsername());
+            userLoginResponseDto.setFullname(user.getFullname());
+            userLoginResponseDto.setPhone(user.getPhone());
+            userLoginResponseDto.setEmail(user.getEmail());
+            userLoginResponseDto.setCccd(user.getCccd());
+            userLoginResponseDto.setAddress(user.getAddress());
+            userLoginResponseDto.setPublicKey(user.getPublicKey());
+            userLoginResponseDto.setIpLastWork(user.getIpLastWork());
+            userLoginResponseDto.setFunctions(functions);
 
-            String accessToken = jwtUtil.generateToken(username, "SHOP");
-            loginResponseDto.setUser(userResponseDto);
+            String accessToken = jwtUtil.generateToken(username, "SHOP", user.getShop().getId());
+            loginResponseDto.setUser(userLoginResponseDto);
             loginResponseDto.setAccessToken(accessToken);
 
             return loginResponseDto;
         }
-        throw new Exception();
+        throw new Exception("Tài khoản hoặc mật khẩu không chính xác!");
     }
 
     private String generateSalt() {

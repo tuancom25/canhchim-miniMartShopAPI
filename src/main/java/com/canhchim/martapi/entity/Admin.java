@@ -1,7 +1,3 @@
-/**
- * Author: Duong Ngo Nam Anh
- */
-
 package com.canhchim.martapi.entity;
 
 import javax.persistence.*;
@@ -11,26 +7,26 @@ import javax.persistence.*;
 public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "AdminId", nullable = false)
+    @Column(name = "admin_id", nullable = false)
     private Integer id;
 
-    @Column(name = "AdminName", nullable = false, length = 60)
-    private String adminName;
+    @Column(name = "username", nullable = false, length = 60)
+    private String username;
 
-    @Column(name = "AdminPhone", length = 12)
-    private String adminPhone;
+    @Column(name = "phone", nullable = false, length = 12)
+    private String phone;
 
-    @Column(name = "AdminPassword", nullable = false, length = 64)
-    private String adminPassword;
+    @Column(name = "password", nullable = false, length = 64)
+    private String password;
 
-    @Column(name = "AdminPassswordSalt", nullable = false, length = 12)
-    private String adminPassswordSalt;
+    @Column(name = "salt", nullable = false, length = 12)
+    private String salt;
 
-    @Column(name = "AdminEmail", nullable = false, length = 60)
-    private String adminEmail;
+    @Column(name = "email", nullable = false, length = 60)
+    private String email;
 
-    @Column(name = "AdminType", nullable = false)
-    private Integer adminType;
+    @Column(name = "type", nullable = false)
+    private Integer type;
 
     public Integer getId() {
         return id;
@@ -40,52 +36,52 @@ public class Admin {
         this.id = id;
     }
 
-    public String getAdminName() {
-        return adminName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setAdminName(String adminName) {
-        this.adminName = adminName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getAdminPhone() {
-        return adminPhone;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setAdminPhone(String adminPhone) {
-        this.adminPhone = adminPhone;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public String getAdminPassword() {
-        return adminPassword;
+    public String getPassword() {
+        return password;
     }
 
-    public void setAdminPassword(String adminPassword) {
-        this.adminPassword = adminPassword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getAdminPassswordSalt() {
-        return adminPassswordSalt;
+    public String getSalt() {
+        return salt;
     }
 
-    public void setAdminPassswordSalt(String adminPassswordSalt) {
-        this.adminPassswordSalt = adminPassswordSalt;
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
-    public String getAdminEmail() {
-        return adminEmail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setAdminEmail(String adminEmail) {
-        this.adminEmail = adminEmail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public Integer getAdminType() {
-        return adminType;
+    public Integer getType() {
+        return type;
     }
 
-    public void setAdminType(Integer adminType) {
-        this.adminType = adminType;
+    public void setType(Integer type) {
+        this.type = type;
     }
 
 }
