@@ -1,17 +1,25 @@
 package com.canhchim.martapi.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name = "shops")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Shop {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "shop_id", nullable = false)
     private Integer id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, length = 60)
     private String name;
 
     @Column(name = "gps_long")
@@ -21,8 +29,8 @@ public class Shop {
     private Integer gpsLat;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "contry_id", nullable = false)
-    private Country contry;
+    @JoinColumn(name = "country_id", nullable = false)
+    private Country country;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "province_id", nullable = false)
@@ -57,6 +65,16 @@ public class Shop {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
+
+
+//    @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private List<Category> categoryList = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private List<CategoryProduct> categoryProductList = new ArrayList<>();
+
+
+
     public Integer getId() {
         return id;
     }
@@ -89,12 +107,12 @@ public class Shop {
         this.gpsLat = gpsLat;
     }
 
-    public Country getContry() {
-        return contry;
+    public Country getCountry() {
+        return country;
     }
 
-    public void setContry(Country contry) {
-        this.contry = contry;
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
     public Province getProvince() {

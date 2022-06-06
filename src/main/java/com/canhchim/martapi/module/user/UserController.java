@@ -61,7 +61,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(HttpServletRequest request, @PathVariable Integer id, @RequestBody UserRequestDto userRequestDto) throws IOException, NoSuchAlgorithmException {
-        permissionUtil.acceptAction(request, "User", "userShop.id", "id", id);
+        permissionUtil.acceptAction(request, "User", "shop.id", "id", id);
 
         //Tạo user
         UserResponseDto userResponseDto = userService.create(userRequestDto);

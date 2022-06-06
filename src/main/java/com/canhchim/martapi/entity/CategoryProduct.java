@@ -1,8 +1,13 @@
 package com.canhchim.martapi.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "category_products")
 public class CategoryProduct {
     @Id
@@ -25,6 +30,8 @@ public class CategoryProduct {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "shop_id", nullable = false)
     private Shop shop;
+
+
 
     public Integer getId() {
         return id;
