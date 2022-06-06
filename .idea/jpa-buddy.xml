@@ -3,5 +3,6 @@
   <component name="JpaBuddyIdeaProjectConfig">
     <option name="reverseEngineeringLastDbConnectionId" value="92773a1e-12b9-4d6c-a1cb-e6f2d01d1c28" />
     <option name="reLastEntityCreationPackage" value="src/main/java/com/canhchim/martapi/entity" />
+    <option name="defaultUnitInitialized" value="true" />
   </component>
 </project>
