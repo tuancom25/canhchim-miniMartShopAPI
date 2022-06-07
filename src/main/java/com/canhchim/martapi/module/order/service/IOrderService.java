@@ -6,11 +6,11 @@ import com.canhchim.martapi.entity.Order;
 import java.util.List;
 
 public interface IOrderService {
-    List<Order> getList();
+    List<OrderDto> getList();
 
     String addOrder(OrderDto orderDto);
 
     String updateOrder(OrderDto orderDto);
 
-    String deleteOrder(Integer id);
+    String deleteOrder(Long id);
 }

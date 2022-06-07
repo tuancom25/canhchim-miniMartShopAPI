@@ -1,10 +1,18 @@
 package com.canhchim.martapi.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name = "shops")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Shop {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,6 +64,16 @@ public class Shop {
 
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
+
+
+
+//    @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private List<Category> categoryList = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private List<CategoryProduct> categoryProductList = new ArrayList<>();
+
+
 
     public Integer getId() {
         return id;
