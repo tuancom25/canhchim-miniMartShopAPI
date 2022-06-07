@@ -36,7 +36,7 @@ public class ProductSupplyController {
     }
 
     @PostMapping("/update-product-supply")
-    ResponseEntity<ProductSupplyDto> updateProductType (HttpServletRequest httpServletRequest, @RequestBody ProductSupplyDto productSupplyDto ) throws IOException {
+    ResponseEntity<ProductSupplyDto> updateroductType (HttpServletRequest httpServletRequest, @RequestBody ProductSupplyDto productSupplyDto ) throws IOException {
 //        permissionUtil.acceptAction(httpServletRequest,"ProductType","shopId.id","id",1);
         //productSupplyService.addProductSupplyDto(productSupplyDto,permissionUtil.getShopId(httpServletRequest));
         return ResponseEntity.ok().body(productSupplyService.updateProductSupplyDto(productSupplyDto,permissionUtil.getShopId(httpServletRequest)));
@@ -44,7 +44,7 @@ public class ProductSupplyController {
 
     @GetMapping("/delete-product-type")
     ResponseEntity<String> deleteProductType (HttpServletRequest httpServletRequest, @RequestBody ProductSupplyDto productSupplyDto) throws IOException {
-        //permissionUtil.acceptAction(httpServletRequest,"ProductType","shopId.id","id",1);
+        //permissionUtil.acceptAction(httpServletRequesPt,"ProductType","shopId.id","id",1);
         String notification = productSupplyService.deleteProductSupplyDto(permissionUtil.getShopId(httpServletRequest),productSupplyDto);
         return ResponseEntity.ok().body(notification);
     }

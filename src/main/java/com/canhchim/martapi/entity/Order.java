@@ -2,7 +2,6 @@ package com.canhchim.martapi.entity;
 
 import javax.persistence.*;
 import java.time.Instant;
-
 @Entity
 @Table(name = "orders")
 public class Order {
@@ -14,8 +13,8 @@ public class Order {
     @Column(name = "order_code", nullable = false, length = 40)
     private String orderCode;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "customer_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -40,46 +39,46 @@ public class Order {
     @Column(name = "reject_money", nullable = false)
     private Integer rejectMoney;
 
-    @Column(name = "customer_name", nullable = false, length = 60)
+    @Column(name = "customer_name", length = 60)
     private String customerName;
 
-    @Column(name = "customer_phone", nullable = false, length = 12)
+    @Column(name = "customer_phone", length = 12)
     private String customerPhone;
 
     @Column(name = "status_pay", nullable = false)
-    private Boolean statusPay = false;
+    private Integer statusPay;
 
-    @Column(name = "status_ship", nullable = false)
-    private Boolean statusShip = false;
+    @Column(name = "status_ship")
+    private Integer statusShip;
 
-    @Column(name = "status_ship_comment", nullable = false, length = 120)
+    @Column(name = "status_ship_comment", length = 120)
     private String statusShipComment;
 
     @Column(name = "type", nullable = false)
-    private Boolean type = false;
+    private Integer type;
 
     @Column(name = "pay_type", nullable = false)
-    private Boolean payType = false;
+    private Integer payType;
 
-    @Column(name = "cusstomer_adrress", nullable = false, length = 120)
-    private String cusstomerAdrress;
+    @Column(name = "customer_adrress", length = 120)
+    private String customerAdrress;
 
-    @Column(name = "cusstomer_adrress2", nullable = false, length = 120)
-    private String cusstomerAdrress2;
+    @Column(name = "customer_adrress2", length = 120)
+    private String customerAdrress2;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "shop_id", nullable = false)
     private Shop shop;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "shipper_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shipper_id")
     private Shipper shipper;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "ship_company_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ship_company_id")
     private ShipCompany shipCompany;
 
-    @Column(name = "order_comment", nullable = false, length = 120)
+    @Column(name = "order_comment", length = 120)
     private String orderComment;
 
     public Long getId() {
@@ -178,19 +177,19 @@ public class Order {
         this.customerPhone = customerPhone;
     }
 
-    public Boolean getStatusPay() {
+    public Integer getStatusPay() {
         return statusPay;
     }
 
-    public void setStatusPay(Boolean statusPay) {
+    public void setStatusPay(Integer statusPay) {
         this.statusPay = statusPay;
     }
 
-    public Boolean getStatusShip() {
+    public Integer getStatusShip() {
         return statusShip;
     }
 
-    public void setStatusShip(Boolean statusShip) {
+    public void setStatusShip(Integer statusShip) {
         this.statusShip = statusShip;
     }
 
@@ -202,36 +201,36 @@ public class Order {
         this.statusShipComment = statusShipComment;
     }
 
-    public Boolean getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(Boolean type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
-    public Boolean getPayType() {
+    public Integer getPayType() {
         return payType;
     }
 
-    public void setPayType(Boolean payType) {
+    public void setPayType(Integer payType) {
         this.payType = payType;
     }
 
-    public String getCusstomerAdrress() {
-        return cusstomerAdrress;
+    public String getCustomerAdrress() {
+        return customerAdrress;
     }
 
-    public void setCusstomerAdrress(String cusstomerAdrress) {
-        this.cusstomerAdrress = cusstomerAdrress;
+    public void setCustomerAdrress(String customerAdrress) {
+        this.customerAdrress = customerAdrress;
     }
 
-    public String getCusstomerAdrress2() {
-        return cusstomerAdrress2;
+    public String getCustomerAdrress2() {
+        return customerAdrress2;
     }
 
-    public void setCusstomerAdrress2(String cusstomerAdrress2) {
-        this.cusstomerAdrress2 = cusstomerAdrress2;
+    public void setCustomerAdrress2(String customerAdrress2) {
+        this.customerAdrress2 = customerAdrress2;
     }
 
     public Shop getShop() {
