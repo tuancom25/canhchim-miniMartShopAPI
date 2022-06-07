@@ -7,7 +7,7 @@ import com.canhchim.martapi.module.order.mapping.DataMapping;
 import com.canhchim.martapi.module.order.repository.OrderRepository;
 import com.canhchim.martapi.module.shipper.ShipCompanyRepository;
 import com.canhchim.martapi.module.shipper.ShipperRepository;
-import com.canhchim.martapi.module.shop.ShopRepository;
+import com.canhchim.martapi.module.shop.repository.ShopRepository;
 import com.canhchim.martapi.module.user.IUserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
