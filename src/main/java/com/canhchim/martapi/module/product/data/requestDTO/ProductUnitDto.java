@@ -11,12 +11,12 @@ import java.io.Serializable;
 @Setter
 public class ProductUnitDto implements Serializable {
     private  Integer id;
-    private  Integer name;
+    private  String name;
 
     public ProductUnitDto() {
     }
 
-    public ProductUnitDto(Integer id, Integer name) {
+    public ProductUnitDto(Integer id, String name) {
         this.id = id;
         this.name = name;
     }

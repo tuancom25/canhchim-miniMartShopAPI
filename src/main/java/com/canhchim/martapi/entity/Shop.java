@@ -11,7 +11,7 @@ public class Shop {
     @Column(name = "shop_id", nullable = false)
     private Integer id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, length = 60)
     private String name;
 
     @Column(name = "gps_long")
@@ -21,8 +21,8 @@ public class Shop {
     private Integer gpsLat;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "contry_id", nullable = false)
-    private Country contry;
+    @JoinColumn(name = "country_id", nullable = false)
+    private Country country;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "province_id", nullable = false)
@@ -89,12 +89,12 @@ public class Shop {
         this.gpsLat = gpsLat;
     }
 
-    public Country getContry() {
-        return contry;
+    public Country getCountry() {
+        return country;
     }
 
-    public void setContry(Country contry) {
-        this.contry = contry;
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
     public Province getProvince() {

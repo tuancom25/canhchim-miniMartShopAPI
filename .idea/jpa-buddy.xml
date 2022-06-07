@@ -2,5 +2,13 @@
 <project version="4">
   <component name="JpaBuddyIdeaProjectConfig">
     <option name="defaultUnitInitialized" value="true" />
+    <option name="reverseEngineeringLastDbConnectionId" value="d0875138-60dc-477d-8efd-ee52cee6912d" />
+    <option name="reLastEntityCreationPackage" value="src/main/java/com/canhchim/martapi/entity" />
+    <reUseDbSnapshotConnections>
+      <dbConnection id="d0875138-60dc-477d-8efd-ee52cee6912d" />
+    </reUseDbSnapshotConnections>
+    <option name="reIgnoreSlowDbConnections">
+      <ignoreDs id="d0875138-60dc-477d-8efd-ee52cee6912d" />
+    </option>
   </component>
 </project>

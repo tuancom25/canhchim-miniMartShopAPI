@@ -10,6 +10,10 @@ import com.canhchim.martapi.module.user.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.spi.CalendarNameProvider;
+
 @Component
 public class MappingData {
     @Autowired
@@ -24,10 +28,10 @@ public class MappingData {
     IProductInputRepository productinputRepositoryI;
 
     @Autowired
-    IProductSupplyRepository IProductSupplyRepository;
+    IProductSupplyRepository iProductSupplyRepository;
 
     @Autowired
-    IProductUnitRepository IProductUnitRepository;
+    IProductUnitRepository iProductUnitRepository;
 
     @Autowired
     IShopRepository IShopRepository;
@@ -115,10 +119,12 @@ public class MappingData {
     public ProductInput mappingProductInputDtoToEntity(ProductInputDto dto){
         ProductInput entity = new ProductInput();
         entity.setId(dto.getId());
-        entity.setInputDate1(dto.getInputDate1());
-        entity.setInputDate2(dto.getInputDate2());
+        //entity.setInputDate1(dto.getInputDate1());
+//        Calendar now = Calendar.getInstance().get(Calendar.YEAR);
+        Integer date2 = Calendar.getInstance().get(Calendar.YEAR)*10000 + Calendar.getInstance().get(Calendar.MONTH)*100 + Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        entity.setInputDate2(date2);
         entity.setShop(IShopRepository.findById(dto.getShopId()).get());
-        entity.setSupply(IProductSupplyRepository.findById(Long.valueOf(dto.getSupplyId())).get());
+        entity.setSupply(iProductSupplyRepository.findById(dto.getSupplyId()).get());
         entity.setUserInput(userRepository.findById(dto.getUserInputId()).get());
         entity.setTotalMoney(dto.getTotalMoney());
         return entity;
@@ -127,7 +133,7 @@ public class MappingData {
     public ProductInputDto mappingProductInputToDto(ProductInput entity){
         ProductInputDto dto = new ProductInputDto();
         dto.setId(entity.getId());
-        dto.setInputDate1(entity.getInputDate1());
+        //dto.setInputDate1(entity.getInputDate1());
         dto.setInputDate2(entity.getInputDate2());
         dto.setShopId(entity.getShop().getId());
         dto.setSupplyId(entity.getSupply().getId());
@@ -135,4 +141,11 @@ public class MappingData {
         dto.setTotalMoney(entity.getTotalMoney());
         return dto;
     }
+
+//    public ProductUnit mappingProductUnitDtoToEntity(ProductUnitDto dto){
+//        ProductUnit entity = new ProductUnit();
+//        entity.setName(dto.getName());
+//        entity.setId(dto.getId());
+//        return entity;
+//    }
 }

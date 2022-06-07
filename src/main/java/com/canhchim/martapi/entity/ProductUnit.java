@@ -11,7 +11,7 @@ public class ProductUnit {
     private Integer id;
 
     @Column(name = "name", nullable = false)
-    private Integer name;
+    private String name;
 
     public Integer getId() {
         return id;
@@ -21,11 +21,11 @@ public class ProductUnit {
         this.id = id;
     }
 
-    public Integer getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(Integer name) {
+    public void setName(String name) {
         this.name = name;
     }
 

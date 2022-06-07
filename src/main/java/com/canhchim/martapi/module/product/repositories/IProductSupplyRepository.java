@@ -14,5 +14,7 @@ public interface IProductSupplyRepository extends JpaRepository<ProductSupply, L
     @Query("select p from ProductSupply p where p.name = ?1 and p.address = ?2")
     Optional<ProductSupply> findByNameAndAddress(String name, String address);
 
+    Optional<ProductSupply> findById(int aLong);
+
 
 }

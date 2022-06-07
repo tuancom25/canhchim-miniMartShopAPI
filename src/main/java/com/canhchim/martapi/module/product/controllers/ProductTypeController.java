@@ -8,8 +8,8 @@ import com.canhchim.martapi.util.PermissionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class ProductTypeController {
 
     @PostMapping("/test-acceptAction")
     String testAcceptAction (HttpServletRequest httpServletRequest, @RequestBody ProductTypeDto productTypeDto) throws IOException {
-        permissionUtil.acceptAction(httpServletRequest,"ProductType","shopId.id","id",1);
+        permissionUtil.acceptAction(httpServletRequest,"ProductType","shop.id","id",1);
         System.err.println("Id: " + permissionUtil.getShopId(httpServletRequest));
         return "chay dc";
     }
@@ -32,7 +32,7 @@ public class ProductTypeController {
     @PostMapping("/create-product-type")
     ResponseEntity<ProductTypeDto> addProductType (HttpServletRequest httpServletRequest, @RequestBody ProductTypeDto productTypeDto) throws IOException {
 //        System.err.println("Id: " + permissionUtil.getShopId(httpServletRequest));
-//        permissionUtil.acceptAction(httpServletRequest,"ProductType","shopId.id","id",1);
+//        permissionUtil.acceptAction(httpServletRequest,"ProductType","shop.id","id",1);
 //        System.err.println("Id: " + permissionUtil.getShopId(httpServletRequest));
         productTypeDto.setShopId(permissionUtil.getShopId(httpServletRequest));
         ProductType productType = productTypeService.addProductType(productTypeDto,permissionUtil.getShopId(httpServletRequest));
@@ -46,14 +46,14 @@ public class ProductTypeController {
 
     @GetMapping ("")
     ResponseEntity<List<ProductTypeDto>> getAllProductType (HttpServletRequest httpServletRequest) throws IOException {
-        //permissionUtil.acceptAction(httpServletRequest,"ProductType","shopId.id","id",1);
+        permissionUtil.acceptAction(httpServletRequest,"ProductType","shop.id","id",1);
         List<ProductTypeDto> list = productTypeService.getAllProductType(permissionUtil.getShopId(httpServletRequest));
         return ResponseEntity.ok().body(list);
     }
 
     @PostMapping("/update-product-type")
     ResponseEntity<ProductTypeDto> updateProductType (HttpServletRequest httpServletRequest, @RequestBody ProductTypeDto productTypeDto) throws IOException {
-        //permissionUtil.acceptAction(httpServletRequest,"ProductType","shopId.id","id",1);
+        permissionUtil.acceptAction(httpServletRequest,"ProductType","shop.id","id",1);
         productTypeDto.setShopId(permissionUtil.getShopId(httpServletRequest));
         ProductTypeDto productType = productTypeService.update(productTypeDto,permissionUtil.getShopId(httpServletRequest));
         if (productType == null){
@@ -65,8 +65,8 @@ public class ProductTypeController {
 
     @PostMapping("/delete-product-type")
     ResponseEntity<String> deleteProductType (HttpServletRequest httpServletRequest, @RequestBody ProductTypeDto productTypeDto) throws IOException {
-        permissionUtil.acceptAction(httpServletRequest,"ProductType","shopId.id","id",1);
+        permissionUtil.acceptAction(httpServletRequest,"ProductType","shop.id","id",1);
         String notification = productTypeService.delete(productTypeDto,permissionUtil.getShopId(httpServletRequest));
-        return ResponseEntity.ok().body(notification);
+        return ResponseEntity.status(HttpServletResponse.SC_CREATED).body(notification);
     }
 }
