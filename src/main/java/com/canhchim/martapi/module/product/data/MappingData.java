@@ -3,6 +3,7 @@ package com.canhchim.martapi.module.product.data;
 import com.canhchim.martapi.entity.*;
 
 
+import com.canhchim.martapi.module.categories.category.repo.CategoryRepository;
 import com.canhchim.martapi.module.product.data.requestDTO.*;
 
 import com.canhchim.martapi.module.product.repositories.*;
@@ -10,6 +11,7 @@ import com.canhchim.martapi.module.user.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.spi.CalendarNameProvider;
@@ -20,30 +22,33 @@ public class MappingData {
     IProductTypeRepository IProductTypeRepository;
 
     @Autowired
-    IProductInputDetailRepository productinputdetailRepositoryI;
+    IProductInputDetailRepository productInputDetailRepository;
 
     @Autowired
-    IProductRepository IProductRepository;
+    IProductRepository productRepository;
     @Autowired
-    IProductInputRepository productinputRepositoryI;
+    IProductInputRepository productInputRepository;
 
     @Autowired
-    IProductSupplyRepository iProductSupplyRepository;
+    IProductSupplyRepository productSupplyRepository;
 
     @Autowired
-    IProductUnitRepository iProductUnitRepository;
+    IProductUnitRepository productUnitRepository;
 
     @Autowired
-    IShopRepository IShopRepository;
+    IShopRepository shopRepository;
 
     @Autowired
     IUserRepository userRepository;
+
+    @Autowired
+    CategoryRepository categoryRepository;
     public ProductType mappingProductTypeDTOToEntity(ProductTypeDto productTypeDto){
         ProductType p = new ProductType();
         p.setId(productTypeDto.getId());
         p.setName(productTypeDto.getProductTypeName());
         p.setCode(productTypeDto.getProductTypeCode());
-        p.setShop(IShopRepository.findById(productTypeDto.getShopId()).get());
+        p.setShop(shopRepository.findById(productTypeDto.getShopId()).get());
         return p;
     }
 
@@ -63,9 +68,9 @@ public class MappingData {
         entity.setProductCost(dto.getProductCost());
         entity.setProductOfNumber(dto.getProductOfNumber());
 
-        entity.setProduct(IProductRepository.findById(dto.getProductId()).get());
-        entity.setProductInput(productinputRepositoryI.findById(dto.getProductInputId()).get());
-        entity.setShop(IShopRepository.findById(dto.getShopId()).get());
+        entity.setProduct(productRepository.findById(dto.getProductId()).get());
+        entity.setProductInput(productInputRepository.findById(dto.getProductInputId()).get());
+        entity.setShop(shopRepository.findById(dto.getShopId()).get());
 
 
         return entity;
@@ -103,7 +108,7 @@ public class MappingData {
         ProductSupply entity = new ProductSupply();
         entity.setId(dto.getId());
         entity.setName(dto.getName());
-        entity.setShop(IShopRepository.findById(dto.getShopId()).get());
+        entity.setShop(shopRepository.findById(dto.getShopId()).get());
         entity.setAddress(dto.getAddress());
         return  entity;
     }
@@ -123,8 +128,8 @@ public class MappingData {
 //        Calendar now = Calendar.getInstance().get(Calendar.YEAR);
         Integer date2 = Calendar.getInstance().get(Calendar.YEAR)*10000 + Calendar.getInstance().get(Calendar.MONTH)*100 + Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
         entity.setInputDate2(date2);
-        entity.setShop(IShopRepository.findById(dto.getShopId()).get());
-        entity.setSupply(iProductSupplyRepository.findById(dto.getSupplyId()).get());
+        entity.setShop(shopRepository.findById(dto.getShopId()).get());
+        entity.setSupply(productSupplyRepository.findById(dto.getSupplyId()).get());
         entity.setUserInput(userRepository.findById(dto.getUserInputId()).get());
         entity.setTotalMoney(dto.getTotalMoney());
         return entity;
@@ -148,4 +153,64 @@ public class MappingData {
 //        entity.setId(dto.getId());
 //        return entity;
 //    }
+
+    public ProductDto mappingProductToDto(Product entity){
+        ProductDto dto = new ProductDto();
+        dto.setId(entity.getId());
+        dto.setCode(entity.getCode());
+        dto.setType(entity.getType());
+        dto.setName(entity.getName());
+        dto.setPrice(entity.getPrice());
+        dto.setQuantity(entity.getQuantity());
+        dto.setInputDate(entity.getInputDate());
+        dto.setLastUpdate(entity.getLastUpdate());
+        dto.setStatus(entity.getStatus());
+        dto.setAvatar(entity.getAvatar());
+        dto.setProductParent(entity.getProductParent());
+        dto.setSaleStatus(entity.getSaleStatus());
+        dto.setHasTopUp(entity.getHasTopUp());
+        dto.setIsTopUp(entity.getIsTopUp());
+
+        dto.setProductUnitId(entity.getProductUnit().getId());
+        dto.setShopId(entity.getShop().getId());
+        dto.setUserInputId(entity.getUserInput().getId());
+        dto.setUserLastUpdateId(entity.getUserLastUpdate().getId());
+        dto.setSupplyId(entity.getSupply().getId());
+        dto.setCategoryId(entity.getCategory().getId());
+        return dto;
+    }
+
+    public Product mappingProductToDto(ProductDto dto){
+        Product entity = new Product();
+        entity.setId(dto.getId());
+        entity.setCode(dto.getCode());
+        entity.setType(dto.getType());
+        entity.setName(dto.getName());
+        entity.setPrice(dto.getPrice());
+        entity.setQuantity(dto.getQuantity());
+        entity.setInputDate(dto.getInputDate());
+        entity.setLastUpdate(dto.getLastUpdate());
+        entity.setStatus(dto.getStatus());
+        entity.setAvatar(dto.getAvatar());
+        entity.setProductParent(dto.getProductParent());
+        entity.setSaleStatus(dto.getSaleStatus());
+        entity.setHasTopUp(dto.getHasTopUp());
+        entity.setIsTopUp(dto.getIsTopUp());
+
+//        entity.setProductUnitId(dto.getProductUnit().getId());
+//        entity.setShopId(dto.getShop().getId());
+//        entity.setUserInputId(dto.getUserInput().getId());
+//        entity.setUserLastUpdateId(dto.getUserLastUpdate().getId());
+//        entity.setSupplyId(dto.getSupply().getId());
+//        entity.setCategoryId(dto.getCategory().getId());
+
+        entity.setProductUnit(productUnitRepository.findById(dto.getProductUnitId()).get());
+        entity.setShop(shopRepository.findById(dto.getShopId()).get());
+        entity.setUserInput(userRepository.findById(dto.getUserInputId()).get());
+        entity.setUserLastUpdate(userRepository.findById(dto.getUserLastUpdateId()).get());
+        entity.setSupply(productSupplyRepository.findById(dto.getSupplyId()).get());
+        entity.setCategory(categoryRepository.findById(dto.getCategoryId()).get());
+        return entity;
+    }
+
 }

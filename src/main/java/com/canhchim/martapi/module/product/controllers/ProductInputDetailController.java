@@ -1,14 +1,11 @@
 package com.canhchim.martapi.module.product.controllers;
 
-import com.canhchim.martapi.entity.ProductInput;
 import com.canhchim.martapi.module.product.data.requestDTO.ProductInputDetailDto;
-import com.canhchim.martapi.module.product.data.requestDTO.ProductInputDto;
 import com.canhchim.martapi.module.product.service.ProductInputDetailService;
 import com.canhchim.martapi.util.PermissionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
@@ -32,7 +29,6 @@ public class ProductInputDetailController {
     ResponseEntity<ProductInputDetailDto> addProductType (HttpServletRequest httpServletRequest, @RequestBody ProductInputDetailDto productInputDetailDto){
         //permissionUtil.acceptAction(httpServletRequest,"ProductType","shop.id","id",1);
         ProductInputDetailDto productDetail = detailService.createProductDetail(productInputDetailDto,permissionUtil.getShopId(httpServletRequest));
-
         return ResponseEntity.ok().body(productDetail);
     }
 
@@ -40,7 +36,6 @@ public class ProductInputDetailController {
     ResponseEntity<ProductInputDetailDto> updateProductType (HttpServletRequest httpServletRequest, @RequestBody ProductInputDetailDto productInputDetailDto) throws IOException {
         //permissionUtil.acceptAction(httpServletRequest,"ProductType","shop.id","id",1);
         ProductInputDetailDto productDetail = detailService.createProductDetail(productInputDetailDto,permissionUtil.getShopId(httpServletRequest));
-
         return ResponseEntity.ok().body(productDetail);
     }
 

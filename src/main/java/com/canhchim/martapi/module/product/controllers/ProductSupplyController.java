@@ -7,7 +7,6 @@ import com.canhchim.martapi.util.PermissionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
@@ -42,7 +41,7 @@ public class ProductSupplyController {
         return ResponseEntity.ok().body(productSupplyService.updateProductSupplyDto(productSupplyDto,permissionUtil.getShopId(httpServletRequest)));
     }
 
-    @GetMapping("/delete-product-type")
+    @PostMapping("/delete-product-type")
     ResponseEntity<String> deleteProductType (HttpServletRequest httpServletRequest, @RequestBody ProductSupplyDto productSupplyDto) throws IOException {
         permissionUtil.acceptAction(httpServletRequest,"ProductType","shop.id","id",1);
         String notification = productSupplyService.deleteProductSupplyDto(permissionUtil.getShopId(httpServletRequest),productSupplyDto);

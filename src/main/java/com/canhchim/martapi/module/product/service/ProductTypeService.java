@@ -8,6 +8,8 @@ import com.canhchim.martapi.module.product.repositories.IProductTypeRepository;
 import com.canhchim.martapi.module.product.repositories.IShopRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,7 +22,6 @@ public class ProductTypeService {
 
     @Autowired
     IShopRepository IShopRepository;
-
 
     @Autowired
     MappingData mappingData;
@@ -43,7 +44,6 @@ public class ProductTypeService {
                             + newProductType.getName()
                             + newProductType.getCode());
 
-
             System.err.println(
                     "******************************************"
                             + productTypeDto.getShopId()
@@ -54,15 +54,19 @@ public class ProductTypeService {
     }
 
     public List<ProductTypeDto> getAllProductType(int shopId){
-        List<ProductType> productTypeList = IProductTypeRepository.findByShop_Id(shopId);
-        //System.out.println("Number Of ProductType: "+productTypeList.size());
-
-        List<ProductTypeDto> list = new ArrayList<ProductTypeDto>();
-
+        List<ProductType> productTypeList = IProductTypeRepository.getPage(1,PageRequest.of(0,3)).toList();
+        List<ProductTypeDto> dtoList =  new ArrayList<>();
         for (ProductType p : productTypeList) {
-            list.add(mappingData.mappingProductTypeToDTO(p));
+
+            dtoList.add(mappingData.mappingProductTypeToDTO(p));
+
+            System.err.println("xxxxxxxxxxxxxxxxxxxx");
+            System.err.println(p.getName());
+            System.err.println(p.getCode());
+            System.err.println(p.getShop().getName());
+
         }
-        return list;
+        return dtoList;
     }
 
     public ProductTypeDto update(ProductTypeDto productTypeDto , int shopId){
