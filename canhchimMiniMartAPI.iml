@@ -15,7 +15,7 @@
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
-          <factory-entry name="canhchimMiniMartAPI" value="c692219a-6441-46a7-b53d-5aeccf24cf61" />
+          <factory-entry name="canhchimMiniMartAPI" value="4e4ce9f3-ccee-4603-8cd0-0e79f600a037" />
         </datasource-mapping>
         <naming-strategy-map />
       </configuration>

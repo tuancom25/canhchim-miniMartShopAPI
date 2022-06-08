@@ -11,7 +11,7 @@ import com.canhchim.martapi.module.shop.repository.ShopRepository;
 import com.canhchim.martapi.module.user.IUserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -35,16 +35,16 @@ public class OrderService implements IOrderService {
     private ShipperRepository shipperRepository;
     @Autowired
     private ShipCompanyRepository shipCompanyRepository;
-
     /**
      * không dùng modelmapper, chuyển order thành orderDto = DataMapping
      *
      * @return : trả về list orderDto
      */
     @Override
-    public List<OrderDto> getList() {
-        List<OrderDto> orderDtoList = new ArrayList<OrderDto>();
-        List<Order> orderList = orderRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
+    public List<OrderDto> getList(Integer page, Integer size) {
+        List<OrderDto> orderDtoList = new ArrayList<>();
+//        List<Order> orderList = orderRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
+        List<Order> orderList = orderRepository.listOrder(PageRequest.of(page, size));
         for (Order order : orderList) {
             OrderDto orderDto = new OrderDto();
             orderDto = mapping.mappingOrderToDto(order);
@@ -61,6 +61,14 @@ public class OrderService implements IOrderService {
      */
     @Override
     public String addOrder(OrderDto orderDto) {
+        //
+        List listOrderCode = orderRepository.listOrderCode();
+        for (Object code: listOrderCode) {
+            if (orderDto.getOrderCode().equals(code)) {
+                return "orderCode bị trùng rồi. Thay orderCode khác đê";
+            }
+        }
+        //
         Order order = new Order();
         order = modelMapper.map(orderDto, Order.class);
         order.setUser(userRepository.findById(orderDto.getUserId()).get());
@@ -75,7 +83,7 @@ public class OrderService implements IOrderService {
             order.setShipCompany(shipCompanyRepository.findById(orderDto.getShipCompanyId()).get());
         }
         orderRepository.save(order);
-        return "them order thanh cong";
+        return "thêm order thành công";
     }
 
     /**
@@ -103,7 +111,7 @@ public class OrderService implements IOrderService {
             orderRepository.save(order);
             return "chinh sua thanh cong";
         } else {
-            return "orderId khong ton tai";
+            return "orderId không tồn tại";
         }
     }
 
@@ -111,9 +119,9 @@ public class OrderService implements IOrderService {
     public String deleteOrder(Long id) {
         if (orderRepository.existsById(id)) {
             orderRepository.deleteById(id);
-            return "xoa order thanh cong";
+            return "xoa order thành công";
         } else {
-            return "orderId khong ton tai";
+            return "orderId không tồn tại";
         }
     }
 }
