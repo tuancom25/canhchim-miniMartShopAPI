@@ -6,11 +6,18 @@ import com.canhchim.martapi.dto.shop.ShopDto;
 import com.canhchim.martapi.entity.Shop;
 import com.canhchim.martapi.module.categories.convert.Convert;
 import com.canhchim.martapi.module.shop.repository.ShopRepository;
+import com.canhchim.martapi.util.MessageConstants;
+import com.canhchim.martapi.util.MessagesUtils;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,24 +25,26 @@ import java.util.stream.Collectors;
 public class ShopService {
     private final ShopRepository shopRepository;
     private final Convert convert;
+    private final MessagesUtils messagesUtils;
     // Get All Shop
-    public List<ShopDto> getAllShop() {
-        List<Shop> shopList = shopRepository.findAll();
+
+    public List<ShopDto> getAllShop(int page, int size) {
+        List<Shop> shopList = shopRepository.getPage(PageRequest.of(page,size)).toList();
         return shopList.stream().map(convert::convertShopToDto).collect(Collectors.toList());
     }
     // Get Shop by Id
-    public ShopDto findById(Integer id) {
-        Shop shop = shopRepository.findById(id).orElse(null);
-        assert shop != null;
-        return convert.convertShopToDto(shop);
+    public ShopDto findById(Integer id) throws Exception {
+        Optional<Shop> optionalShop = shopRepository.findById(id);
+        if (!optionalShop.isPresent()) {
+            throw new Exception(messagesUtils.getMessage(MessageConstants.Shop_ERROR_NOT_FOUND));
+        }else {
+            return convert.convertShopToDto(optionalShop.get());
+        }
     }
     public Shop findShopById(Integer id) {
         return shopRepository.findById(id).orElse(null);
     }
 
-
-
-    // Get Shop by Name
 
     // Create Shop
     public ShopDto create(ShopDto shopDto) {

@@ -8,13 +8,16 @@ import com.canhchim.martapi.module.categories.category.repo.CategoryRepository;
 import com.canhchim.martapi.module.categories.categoryGroup.service.CategoryGroupService;
 import com.canhchim.martapi.module.categories.convert.Convert;
 import com.canhchim.martapi.module.shop.service.ShopService;
+import com.canhchim.martapi.util.MessageConstants;
 import com.canhchim.martapi.util.MessagesUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,16 +32,19 @@ public class CategoryService {
 
     // Get All Category
 
-    public List<CategoryDto> findAll() {
-        List<Category> categoryList = categoryRepository.findAll();
+    public List<CategoryDto> findAll(int page, int size) {
+        List<Category> categoryList = categoryRepository.findAllCategory(PageRequest.of(page,size)).toList();
         return categoryList.stream().map(convert::convertCategoryToDto).collect(Collectors.toList());
     }
     // Get Category by Id
-    public CategoryDto findById(Integer id) {
-        Category category =categoryRepository.findById(id).orElse(null);
-        assert category != null;
-        CategoryDto categoryDto = convert.convertCategoryToDto(category);
-        return categoryDto;
+    public CategoryDto findById(Integer id) throws Exception {
+        Optional<Category> optionalCategory =categoryRepository.findById(id);
+        if (!optionalCategory.isPresent()) {
+            throw new Exception(messagesUtils.getMessage(MessageConstants.Category_ERROR_NOT_FOUND));
+        }else {
+            return convert.convertCategoryToDto(optionalCategory.get());
+        }
+
     }
 
     public Category findShopById(Integer id) {

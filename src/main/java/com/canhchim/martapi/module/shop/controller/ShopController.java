@@ -2,8 +2,8 @@
 
 package com.canhchim.martapi.module.shop.controller;
 
+import com.canhchim.martapi.dto.ResponseDto;
 import com.canhchim.martapi.dto.shop.ShopDto;
-import com.canhchim.martapi.entity.Shop;
 import com.canhchim.martapi.module.shop.service.ShopService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,35 +11,39 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/shop")
 @RequiredArgsConstructor
 public class ShopController {
     private final ShopService shopService;
+    ResponseDto responseDto = new ResponseDto();
 
     // Get All Shop
     @GetMapping("/findAll")
-    public ResponseEntity<List<ShopDto>> getAllShop() {
+    public ResponseEntity<?> getAllShop(@RequestParam int page,@RequestParam int size) {
 
-        return ResponseEntity.ok(shopService.getAllShop());
+        responseDto.setData(shopService.getAllShop(page,size));
+        return ResponseEntity.ok(responseDto);
     }
     // Get Shop by Id
     @GetMapping("/findById/{id}")
-    public ResponseEntity<ShopDto> findById(@PathVariable Integer id) {
-        return ResponseEntity.ok(shopService.findById(id));
+    public ResponseEntity<?> findById(@PathVariable Integer id) throws Exception {
+        responseDto.setData(shopService.findById(id));
+        return ResponseEntity.ok(responseDto);
     }
     // Create Shop
     @PostMapping("/create")
-    public ResponseEntity<ShopDto> create(@Valid @RequestBody ShopDto shopDto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(shopService.create(shopDto));
+    public ResponseEntity<?> create(@Valid @RequestBody ShopDto shopDto) {
+        responseDto.setData(shopService.create(shopDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
     // Update Shop
     @PutMapping("/update/{id}")
-    public ResponseEntity<ShopDto> update(@PathVariable("id") Integer id , @Valid @RequestBody ShopDto shopDto) {
+    public ResponseEntity<?> update(@PathVariable("id") Integer id , @Valid @RequestBody ShopDto shopDto) {
         shopDto.setId(id);
-        return ResponseEntity.ok(shopService.update(shopDto));
+        responseDto.setData(shopService.update(shopDto));
+        return ResponseEntity.ok(responseDto);
     }
     // Delete Shop
     @DeleteMapping("/delete/{id}")

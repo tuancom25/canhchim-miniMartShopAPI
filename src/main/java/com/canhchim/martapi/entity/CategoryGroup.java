@@ -1,10 +1,15 @@
 package com.canhchim.martapi.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "category_groups")
 public class CategoryGroup {
     @Id
@@ -19,8 +24,8 @@ public class CategoryGroup {
     @JoinColumn(name = "shop_id", nullable = false)
     private Shop shop;
 
-    @OneToMany(mappedBy = "categoryGroup",cascade = CascadeType.REMOVE)
-    private List<Category> categoryList = new ArrayList<>();
+//    @OneToMany(mappedBy = "categoryGroup",cascade = CascadeType.REMOVE)
+//    private List<Category> categoryList = new ArrayList<>();
     public Integer getId() {
         return id;
     }
