@@ -56,8 +56,8 @@ public class OrderService implements IOrderService {
     /**
      * dùng modelmapper để chuyển orderDTO thành order, thêm order vào orderRepository
      *
-     * @param orderDto
-     * @return order
+     * @param orderDto : la order can them vao
+     * @return order : la order la duoc them vao
      */
     @Override
     public String addOrder(OrderDto orderDto) {
@@ -90,8 +90,8 @@ public class OrderService implements IOrderService {
      * lấy id(orderId) kiểm tra có tồn tại không. Nếu có thì dùng modelmapper để chuyển modelDto thành order.
      * Thêm order chèn vào orderRepository
      *
-     * @param orderDto
-     * @return order
+     * @param orderDto : la order can update
+     * @return order : la order duoc update thanh cong
      */
     @Override
     public String updateOrder(OrderDto orderDto) {
@@ -115,6 +115,11 @@ public class OrderService implements IOrderService {
         }
     }
 
+    /**
+     * xoa order dua tren id
+     * @param id : la id cua order can xoa
+     * @return xoa order thanh cong
+     */
     @Override
     public String deleteOrder(Long id) {
         if (orderRepository.existsById(id)) {
@@ -123,5 +128,18 @@ public class OrderService implements IOrderService {
         } else {
             return "orderId không tồn tại";
         }
+    }
+
+    /**
+     * tim kiem order = orderCode
+     * @param orderCode : la orderCode cua order can tim
+     * @return order : la order can tim
+     */
+    @Override
+    public OrderDto getByOrderCode(String orderCode) {
+        Order order = orderRepository.findByOrderCode(orderCode);
+        OrderDto orderDto = new OrderDto();
+        orderDto = mapping.mappingOrderToDto(order);
+        return orderDto;
     }
 }

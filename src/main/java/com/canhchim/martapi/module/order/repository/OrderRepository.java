@@ -14,6 +14,11 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("select o.orderCode from Order o")
     List listOrderCode();
 
+    @Query("select o from Order o where o.orderCode = ?1")
+    Order findByOrderCode(String orderCode);
+
+
+
 //    @Query(value = "select * from Order where orderCode = ?", nativeQuery = true)
 //    List<Order>
 }

@@ -24,6 +24,14 @@ public class OrderController {
         return ResponseEntity.ok().body(responseDto);
     }
 
+    @GetMapping("/order") // lay thong tin order theo order Code
+    ResponseEntity<?> getByOrderCode(@RequestParam String orderCode) throws IOException {
+        ResponseDto responseDto = new ResponseDto();
+        OrderDto orderDto = orderService.getByOrderCode(orderCode);
+        responseDto.setData(orderDto);
+        return ResponseEntity.ok().body(responseDto);
+    }
+
     @PostMapping("/order")
     public String addOrder(@RequestBody OrderDto orderDto){
         return orderService.addOrder(orderDto);
