@@ -42,6 +42,7 @@ public class ProductSupplyService {
         }
         if(flag){
             productSupplyDto.setShopId(shopId);
+            IProductSupplyRepository.save(mappingData.mappingProductSupplyDtoToEntity(productSupplyDto));
             return productSupplyDto;
         }else return null;
     }
@@ -51,6 +52,7 @@ public class ProductSupplyService {
         if (productSupply != null && productSupply.getShop().getId() == shopId){
             productSupply.setAddress(productSupplyDto.getAddress());
             productSupply.setName(productSupplyDto.getName());
+            IProductSupplyRepository.save(mappingData.mappingProductSupplyDtoToEntity(productSupplyDto));
             return mappingData.mappingProductSupplyToDto(productSupply);
         } else return null;
     }
