@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JpaBuddyIdeaProjectConfig">
-    <option name="reverseEngineeringLastDbConnectionId" value="92773a1e-12b9-4d6c-a1cb-e6f2d01d1c28" />
-    <option name="reLastEntityCreationPackage" value="src/main/java/com/canhchim/martapi/entity" />
     <option name="defaultUnitInitialized" value="true" />
-    <option name="reverseEngineeringLastDbConnectionId" value="d0875138-60dc-477d-8efd-ee52cee6912d" />
+    <option name="reverseEngineeringLastDbConnectionId" value="4e4ce9f3-ccee-4603-8cd0-0e79f600a037" />
     <option name="reLastEntityCreationPackage" value="src/main/java/com/canhchim/martapi/entity" />
     <reUseDbSnapshotConnections>
       <dbConnection id="d0875138-60dc-477d-8efd-ee52cee6912d" />

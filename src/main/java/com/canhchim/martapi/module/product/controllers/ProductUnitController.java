@@ -33,7 +33,6 @@ public class ProductUnitController {
     ResponseEntity<ProductUnitDto> addProductType (HttpServletRequest httpServletRequest, @RequestBody ProductUnitDto productUnitDto){
         //permissionUtil.acceptAction(httpServletRequest,"ProductType","shop.id","id",1);
         ProductUnitDto responseProductUnitDto = productUnitService.addProductUnit(productUnitDto);
-
         return ResponseEntity.ok().body(responseProductUnitDto);
     }
 

@@ -44,11 +44,30 @@ public class ProductTypeController {
         }
     }
 
+//    @GetMapping ("")
+//    ResponseEntity<?> getAllProductType (HttpServletRequest httpServletRequest) throws IOException {
+//        ResponseDto responseDto = new ResponseDto();
+//
+//        permissionUtil.acceptAction(httpServletRequest,"ProductType","shop.id","id",1);
+//        List<ProductType> list = productTypeService.getAllProductType(permissionUtil.getShopId(httpServletRequest));
+//
+//        responseDto.setData(list);
+//        return ResponseEntity.ok().body(responseDto);
+//    }
+
     @GetMapping ("")
-    ResponseEntity<List<ProductTypeDto>> getAllProductType (HttpServletRequest httpServletRequest) throws IOException {
-        permissionUtil.acceptAction(httpServletRequest,"ProductType","shop.id","id",1);
+    List<ProductTypeDto> getAllProductType (HttpServletRequest httpServletRequest) throws IOException {
         List<ProductTypeDto> list = productTypeService.getAllProductType(permissionUtil.getShopId(httpServletRequest));
-        return ResponseEntity.ok().body(list);
+
+//        List<ProductTypeDto> dtoList =  new ArrayList<>();
+//        for (ProductType p : list) {
+//            System.err.println("xxxxxxxxxxxxxxxxxxxx");
+//            System.err.println(p.getName());
+//            System.err.println(p.getCode());
+//            System.err.println(p.getShop().getName());
+//
+//        }
+        return list;
     }
 
     @PostMapping("/update-product-type")

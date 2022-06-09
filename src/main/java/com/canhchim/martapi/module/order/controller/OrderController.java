@@ -1,12 +1,12 @@
 package com.canhchim.martapi.module.order.controller;
 
 import com.canhchim.martapi.dto.OrderDto;
-import com.canhchim.martapi.module.order.service.OrderService;
+import com.canhchim.martapi.dto.ResponseDto;
+import com.canhchim.martapi.module.order.service.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 
@@ -14,12 +14,22 @@ import java.util.List;
 @RequestMapping("/orders")
 public class OrderController {
     @Autowired
-    OrderService orderService;
+    IOrderService orderService;
 
     @GetMapping("/all") // lay danh sach all order
-    ResponseEntity<List<OrderDto>> getAll(HttpServletRequest httpServletRequest) throws IOException{
-        List<OrderDto> orderDtoList = orderService.getList();
-        return ResponseEntity.ok().body(orderDtoList);
+    ResponseEntity<?> getAll(@RequestParam Integer page, @RequestParam Integer size) throws IOException{
+        ResponseDto responseDto = new ResponseDto();
+        List<OrderDto> list = orderService.getList(page, size);
+        responseDto.setData(list);
+        return ResponseEntity.ok().body(responseDto);
+    }
+
+    @GetMapping("/order") // lay thong tin order theo order Code
+    ResponseEntity<?> getByOrderCode(@RequestParam String orderCode) throws IOException {
+        ResponseDto responseDto = new ResponseDto();
+        OrderDto orderDto = orderService.getByOrderCode(orderCode);
+        responseDto.setData(orderDto);
+        return ResponseEntity.ok().body(responseDto);
     }
 
     @PostMapping("/order")
