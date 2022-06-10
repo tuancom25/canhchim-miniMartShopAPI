@@ -2,7 +2,6 @@ package com.canhchim.martapi.entity;
 
 import javax.persistence.*;
 import java.time.Instant;
-
 @Entity
 @Table(name = "products")
 public class Product {
@@ -10,7 +9,6 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id", nullable = false)
     private Long id;
-
     @Column(name = "code", nullable = false, length = 12)
     private String code;
 
@@ -20,13 +18,10 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
-
     @Column(name = "name", nullable = false, length = 60)
     private String name;
-
     @Column(name = "price", nullable = false)
     private Long price;
-
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
