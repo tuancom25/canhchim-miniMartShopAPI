@@ -8,14 +8,14 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    @Query("select o from Order o order by o.orderCode asc ")
-    List<Order> listOrder(Pageable pageable);
+    @Query("select o from Order o where o.shop.id = ?1")
+    List<Order> listOrder(Pageable pageable, Integer id);
 
-    @Query("select o.orderCode from Order o")
-    List listOrderCode();
+    @Query("select o.orderCode from Order o where o.shop.id = ?1")
+    List listOrderCode(Integer id);
 
-    @Query("select o from Order o where o.orderCode = ?1")
-    Order findByOrderCode(String orderCode);
+    @Query("select o from Order o where o.orderCode = ?1 and o.shop.id = ?2")
+    Order findByOrderCode(String orderCode, Integer shopId);
 
 
 

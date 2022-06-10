@@ -2,14 +2,8 @@ package com.canhchim.martapi.module.order.service;
 
 import com.canhchim.martapi.dto.OrderDto;
 import com.canhchim.martapi.entity.Order;
-import com.canhchim.martapi.module.customer.CustomerRepository;
 import com.canhchim.martapi.module.order.mapping.DataMapping;
 import com.canhchim.martapi.module.order.repository.OrderRepository;
-import com.canhchim.martapi.module.shipper.ShipCompanyRepository;
-import com.canhchim.martapi.module.shipper.ShipperRepository;
-import com.canhchim.martapi.module.shop.repository.ShopRepository;
-import com.canhchim.martapi.module.user.IUserRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -22,29 +16,17 @@ public class OrderService implements IOrderService {
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
-    private ModelMapper modelMapper;
-    @Autowired
     private DataMapping mapping;
-    @Autowired
-    private IUserRepository userRepository;
-    @Autowired
-    private ShopRepository shopRepository;
-    @Autowired
-    private CustomerRepository customerRepository;
-    @Autowired
-    private ShipperRepository shipperRepository;
-    @Autowired
-    private ShipCompanyRepository shipCompanyRepository;
     /**
      * không dùng modelmapper, chuyển order thành orderDto = DataMapping
      *
      * @return : trả về list orderDto
      */
     @Override
-    public List<OrderDto> getList(Integer page, Integer size) {
+    public List<OrderDto> getList(Integer page, Integer size, Integer id) {
         List<OrderDto> orderDtoList = new ArrayList<>();
 //        List<Order> orderList = orderRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
-        List<Order> orderList = orderRepository.listOrder(PageRequest.of(page, size));
+        List<Order> orderList = orderRepository.listOrder(PageRequest.of(page, size), id);
         for (Order order : orderList) {
             OrderDto orderDto = new OrderDto();
             orderDto = mapping.mappingOrderToDto(order);
@@ -60,13 +42,8 @@ public class OrderService implements IOrderService {
      * @return order : la order la duoc them vao
      */
     @Override
-    public String addOrder(OrderDto orderDto) {
-        List listOrderCode = orderRepository.listOrderCode();
-        for (Object code: listOrderCode) {
-            if (orderDto.getOrderCode().equals(code)) {
-                return "orderCode bị trùng rồi. Thay orderCode khác đê";
-            }
-        }
+    public String addOrder(OrderDto orderDto, Integer shopId) {
+        List listOrderCode = orderRepository.listOrderCode(shopId);
         Order order = new Order();
         order = mapping.mappingOderDtoToOrder(orderDto);
         orderRepository.save(order);
@@ -81,7 +58,7 @@ public class OrderService implements IOrderService {
      * @return order : la order duoc update thanh cong
      */
     @Override
-    public String updateOrder(OrderDto orderDto) {
+    public String updateOrder(OrderDto orderDto, Integer shopId) {
         if (orderRepository.existsById(orderDto.getId())) {
             Order order = new Order();
             order = mapping.mappingOderDtoToOrder(orderDto);
@@ -98,7 +75,7 @@ public class OrderService implements IOrderService {
      * @return xoa order thanh cong
      */
     @Override
-    public String deleteOrder(Long id) {
+    public String deleteOrder(Long id, Integer shopId) {
         if (orderRepository.existsById(id)) {
             orderRepository.deleteById(id);
             return "xoa order thành công";
@@ -113,8 +90,8 @@ public class OrderService implements IOrderService {
      * @return order : la order can tim
      */
     @Override
-    public OrderDto getByOrderCode(String orderCode) {
-        Order order = orderRepository.findByOrderCode(orderCode);
+    public OrderDto getByOrderCode(String orderCode, Integer shopId) {
+        Order order = orderRepository.findByOrderCode(orderCode, shopId);
         OrderDto orderDto = new OrderDto();
         orderDto = mapping.mappingOrderToDto(order);
         return orderDto;

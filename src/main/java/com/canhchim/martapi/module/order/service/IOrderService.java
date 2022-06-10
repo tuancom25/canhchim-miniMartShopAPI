@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IOrderService {
-    List<OrderDto> getList(Integer page, Integer size);
+    List<OrderDto> getList(Integer page, Integer size, Integer shopId);
 
-    String addOrder(OrderDto orderDto);
+    String addOrder(OrderDto orderDto, Integer shopId);
 
-    String updateOrder(OrderDto orderDto);
+    String updateOrder(OrderDto orderDto, Integer shopId);
 
-    String deleteOrder(Long id);
+    String deleteOrder(Long id, Integer shopId);
 
-    OrderDto getByOrderCode(String orderCode);
+    OrderDto getByOrderCode(String orderCode, Integer shopId);
 }
