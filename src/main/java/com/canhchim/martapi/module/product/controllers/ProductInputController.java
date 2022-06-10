@@ -38,7 +38,7 @@ public class ProductInputController {
         return ResponseEntity.ok().body(productInputService.addProductInputDto(productInputDto,permissionUtil.getShopId(httpServletRequest)));
     }
 
-    @GetMapping("/delete-product-input")
+    @PostMapping("/delete-product-input")
     ResponseEntity<String> deleteProductInput (HttpServletRequest httpServletRequest, @RequestBody ProductInputDto productInputDto) throws IOException {
         permissionUtil.acceptAction(httpServletRequest,"ProductType","shop.id","id",1);
         String notification = productInputService.deleteProductInputDto(productInputDto,permissionUtil.getShopId(httpServletRequest));

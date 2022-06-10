@@ -9,6 +9,7 @@ import com.canhchim.martapi.module.shop.service.ShopService;
 import com.canhchim.martapi.util.MessagesUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,8 +26,8 @@ public class CategoryProductService {
     private final Convert convert;
 
      //Get All CategoryProduct
-    public List<CategoryProductDto> findAll() {
-        List<CategoryProduct> categoryProductList = categoryProductRepository.findAll();
+    public List<CategoryProductDto> findAll(int page,int size) {
+        List<CategoryProduct> categoryProductList = categoryProductRepository.findAllCategoryProduct(PageRequest.of(page,size)).toList();
         return categoryProductList.stream().map(convert::convertCategoryProductToDto).collect(Collectors.toList());
     }
     // Get CategoryProduct by Id
@@ -53,7 +54,8 @@ public class CategoryProductService {
     // Update CategoryProduct
     public CategoryProductDto update(CategoryProductDto categoryProductDto) {
         CategoryProduct oldCategoryProduct = findCategoryProductById(categoryProductDto.getId());
-        categoryProductRepository.save(convert.convertCategoryProductDtoToEntity(categoryProductDto));
+        oldCategoryProduct = convert.convertCategoryProductDtoToEntity(categoryProductDto);
+        categoryProductRepository.save(oldCategoryProduct);
         return categoryProductDto;
     }
     // Delete CategoryProduct

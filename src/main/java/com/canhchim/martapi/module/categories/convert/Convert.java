@@ -3,16 +3,17 @@ package com.canhchim.martapi.module.categories.convert;
 
 
 import com.canhchim.martapi.dto.category.CategoryDto;
+import com.canhchim.martapi.dto.category.CategoryGroupDto;
 import com.canhchim.martapi.dto.category.CategoryProductDto;
+import com.canhchim.martapi.dto.company.CompanyDto;
 import com.canhchim.martapi.dto.shop.ShopDto;
-import com.canhchim.martapi.entity.Category;
-import com.canhchim.martapi.entity.CategoryProduct;
-import com.canhchim.martapi.entity.Shop;
+import com.canhchim.martapi.entity.*;
 import com.canhchim.martapi.module.address.country.CountryRepository;
 import com.canhchim.martapi.module.address.district.DistrictRepository;
 import com.canhchim.martapi.module.address.province.ProvinceRepository;
 import com.canhchim.martapi.module.address.ward.WardRepository;
 import com.canhchim.martapi.module.categories.categoryGroup.repo.CategoryGroupRepository;
+import com.canhchim.martapi.module.company.repository.CompanyRepository;
 import com.canhchim.martapi.module.shop.repository.ShopRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,8 @@ public class Convert {
     private final ProvinceRepository provinceRepository;
     private final WardRepository wardRepository;
     private final DistrictRepository districtRepository;
+
+    private final CompanyRepository companyRepository;
 
 
         public CategoryDto convertCategoryToDto(Category category) {
@@ -97,6 +100,30 @@ public class Convert {
                     shop.getProvince().getId(),
                     shop.getDistrict().getId(),
                     shop.getWard().getId()
+            );
+        }
+        public Company convertCompanyDtoToEntity(CompanyDto companyDto) {
+            return new Company(companyDto.getId(),
+                    companyDto.getName(),
+                    shopRepository.findById(companyDto.getShopId()).orElse(null)
+            );
+        }
+        public CompanyDto convertCompanyToDto(Company company) {
+            return new CompanyDto(company.getId(),
+                    company.getName(),
+                    company.getShop().getId()
+            );
+        }
+        public CategoryGroup convertCategoryGroupDtoToEntity(CategoryGroupDto categoryGroupDto) {
+            return new CategoryGroup(categoryGroupDto.getId(),
+                    categoryGroupDto.getName(),
+                    shopRepository.findById(categoryGroupDto.getShopId()).orElse(null)
+            );
+        }
+        public CategoryGroupDto convertCategoryGroupToDto(CategoryGroup categoryGroup) {
+            return new CategoryGroupDto(categoryGroup.getId(),
+                    categoryGroup.getName(),
+                    categoryGroup.getShop().getId()
             );
         }
 

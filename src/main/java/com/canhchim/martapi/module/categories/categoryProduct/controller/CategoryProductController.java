@@ -1,6 +1,7 @@
 // Author : Trung
 package com.canhchim.martapi.module.categories.categoryProduct.controller;
 
+import com.canhchim.martapi.dto.ResponseDto;
 import com.canhchim.martapi.dto.category.CategoryProductDto;
 import com.canhchim.martapi.entity.CategoryProduct;
 import com.canhchim.martapi.module.categories.categoryProduct.service.CategoryProductService;
@@ -19,32 +20,44 @@ import java.util.List;
 public class CategoryProductController {
 
     private final CategoryProductService categoryProductService;
+
     // Get All CategoryProduct
     @GetMapping(path = "/findAll")
-    public ResponseEntity<List<CategoryProductDto>> getAllCategoryProduct() {
-        return ResponseEntity.ok(categoryProductService.findAll());
+    public ResponseEntity<?> getAllCategoryProduct(@RequestParam(name = "page", defaultValue = "0") int page,
+                                                                          @RequestParam(name = "size", defaultValue = "30") int size) {
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setData(categoryProductService.findAll(page, size));
+        return ResponseEntity.ok(responseDto);
     }
 
     // Get CategoryProduct by Id
     @GetMapping(path = "/findById/{id}")
-    public ResponseEntity<CategoryProductDto> findById(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok(categoryProductService.findById(id));
+    public ResponseEntity<?> findById(@PathVariable("id") Integer id) {
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setData(categoryProductService.findById(id));
+        return ResponseEntity.ok(responseDto);
     }
     // Get CategoryProduct by ShopId
     @GetMapping(path = "/findByShopId/{shopId}")
-    public ResponseEntity<List<CategoryProductDto>> findByShopId(@PathVariable("shopId") Integer shopId) {
-        return ResponseEntity.ok(categoryProductService.findByShopId(shopId));
+    public ResponseEntity<?> findByShopId(@PathVariable("shopId") Integer shopId) {
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setData(categoryProductService.findByShopId(shopId));
+        return ResponseEntity.ok().body(responseDto);
     }
     // Create CategoryProduct
     @PostMapping(path = "/create")
-    public ResponseEntity<CategoryProductDto> createCategoryProduct(@Valid @RequestBody CategoryProductDto categoryProductDto) {
-        return ResponseEntity.ok(categoryProductService.create(categoryProductDto));
+    public ResponseEntity<?> createCategoryProduct(@Valid @RequestBody CategoryProductDto categoryProductDto) {
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setData(categoryProductService.create(categoryProductDto));
+        return ResponseEntity.ok().body(responseDto);
     }
     // Update CategoryProduct
     @PutMapping(path = "/update/{id}")
-    public ResponseEntity<CategoryProductDto> update(@PathVariable("id") Integer id, @Valid @RequestBody CategoryProductDto categoryProductDto) {
+    public ResponseEntity<?> update(@PathVariable("id") Integer id, @Valid @RequestBody CategoryProductDto categoryProductDto) {
+        ResponseDto responseDto = new ResponseDto();
         categoryProductDto.setId(id);
-        return ResponseEntity.ok(categoryProductService.update(categoryProductDto));
+        responseDto.setData(categoryProductService.update(categoryProductDto));
+        return ResponseEntity.ok(responseDto);
     }
     @DeleteMapping(path = "/delete/{id}")
     public ResponseEntity<Void> deleteCategoryProduct(@PathVariable("id") Integer id) {

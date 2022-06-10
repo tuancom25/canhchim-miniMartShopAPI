@@ -2,6 +2,7 @@
 
 package com.canhchim.martapi.module.categories.categoryGroup.controller;
 
+import com.canhchim.martapi.dto.ResponseDto;
 import com.canhchim.martapi.dto.category.CategoryGroupDto;
 import com.canhchim.martapi.entity.CategoryGroup;
 import com.canhchim.martapi.module.categories.categoryGroup.service.CategoryGroupService;
@@ -21,33 +22,50 @@ import java.util.stream.Collectors;
 public class CategoryGroupController {
     private final CategoryGroupService categoryGroupService;
     private final ModelMapper modelMapper;
+
     // Get All CategoryGroup
     @GetMapping("/findAll")
-    public ResponseEntity<List<CategoryGroupDto>> findAll() {
+    public ResponseEntity<?> findAll() {
+        ResponseDto responseDto = new ResponseDto();
         List<CategoryGroup> categoryGroupList = categoryGroupService.findAll();
-        return ResponseEntity.ok(categoryGroupList.stream().map(categoryGroup -> modelMapper.map(categoryGroup,CategoryGroupDto.class)).collect(Collectors.toList()));
+        responseDto.setData(categoryGroupList.stream().map(categoryGroup -> modelMapper.map(categoryGroup,CategoryGroupDto.class)).collect(Collectors.toList()));
+        return ResponseEntity.ok(responseDto);
     }
 
     // Get CategoryGroup by Id
     @GetMapping("/findById/{id}")
-    public ResponseEntity<CategoryGroupDto> findById(@PathVariable("id") Integer id) {
+    public ResponseEntity<?> findById(@PathVariable("id") Integer id) {
+        ResponseDto responseDto = new ResponseDto();
         CategoryGroup categoryGroup = categoryGroupService.findById(id);
-        return ResponseEntity.ok(modelMapper.map(categoryGroup,CategoryGroupDto.class));
+        responseDto.setData(modelMapper.map(categoryGroup,CategoryGroupDto.class));
+        return ResponseEntity.ok(responseDto);
+    }
+    // Get CategoryGroup by ShopId
+    @GetMapping("/findByShopId/{shopId}")
+    public ResponseEntity<?> findByShopId(@PathVariable Integer shopId) {
+        ResponseDto responseDto = new ResponseDto();
+        List<CategoryGroup> categoryGroupList = categoryGroupService.findByShopId(shopId);
+        responseDto.setData(categoryGroupList.stream().map(categoryGroup -> modelMapper.map(categoryGroup,CategoryGroupDto.class)).collect(Collectors.toList()));
+        return ResponseEntity.ok(responseDto);
     }
 
     // Create CategoryGroup
     @PostMapping("/create")
-    public ResponseEntity<CategoryGroupDto> create(@Valid @RequestBody CategoryGroupDto categoryGroupDto) {
+    public ResponseEntity<?> create(@Valid @RequestBody CategoryGroupDto categoryGroupDto) {
+        ResponseDto responseDto = new ResponseDto();
         categoryGroupDto.setId(null);
         CategoryGroup categoryGroup = categoryGroupService.create(categoryGroupDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(categoryGroupDto);
+        responseDto.setData(categoryGroupDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
     // Update CategoryGroup
     @PutMapping("/update/{id}")
-    public ResponseEntity<CategoryGroupDto> update(@PathVariable("id") Integer id ,@Valid @RequestBody CategoryGroupDto categoryGroupDto) {
+    public ResponseEntity<?> update(@PathVariable("id") Integer id ,@Valid @RequestBody CategoryGroupDto categoryGroupDto) {
+        ResponseDto responseDto = new ResponseDto();
         categoryGroupDto.setId(id);
         CategoryGroup categoryGroup = categoryGroupService.update(categoryGroupDto);
-        return ResponseEntity.ok(categoryGroupDto);
+        responseDto.setData(modelMapper.map(categoryGroup,CategoryGroupDto.class));
+        return ResponseEntity.ok(responseDto);
     }
     // Delete CategoryGroup
     @DeleteMapping("/delete/{id}")
