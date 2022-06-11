@@ -1,5 +1,6 @@
 package com.canhchim.martapi.module.product.controllers;
 
+import com.canhchim.martapi.dto.ResponseDto;
 import com.canhchim.martapi.module.product.data.requestDTO.ProductInputDto;
 import com.canhchim.martapi.module.product.service.ProductInputService;
 import com.canhchim.martapi.util.PermissionUtil;
@@ -18,30 +19,32 @@ public class ProductInputController {
     @Autowired
     PermissionUtil permissionUtil ;
     @GetMapping("")
-    ResponseEntity<List<ProductInputDto>> getAllProductInput(HttpServletRequest httpServletRequest) throws IOException {
-//        permissionUtil.acceptAction(httpServletRequest,"ProductType","shop.id","id",1);
+    ResponseEntity<?> getAllProductInput(HttpServletRequest httpServletRequest) throws IOException {
         List<ProductInputDto> list = productInputService.getAllProductInputDto(permissionUtil.getShopId(httpServletRequest));
-        return ResponseEntity.ok().body(list);
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setData(list);
+        return ResponseEntity.ok().body(responseDto);
     }
 
     @PostMapping("/create-product-input")
-    ResponseEntity<ProductInputDto> addProductType (HttpServletRequest httpServletRequest, @RequestBody ProductInputDto productInputDto) throws IOException {
-//        permissionUtil.acceptAction(httpServletRequest,"ProductType","shop.id","id",1);
-        productInputService.addProductInputDto(productInputDto,permissionUtil.getShopId(httpServletRequest));
-        return ResponseEntity.ok().body(productInputService.addProductInputDto(productInputDto,permissionUtil.getShopId(httpServletRequest)));
+    ResponseEntity<?> addProductType (HttpServletRequest httpServletRequest, @RequestBody ProductInputDto productInputDto) throws IOException {
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setData(productInputService.addProductInputDto(productInputDto,permissionUtil.getShopId(httpServletRequest)));
+        return ResponseEntity.ok().body(responseDto);
     }
 
     @PostMapping("/update-product-input")
-    ResponseEntity<ProductInputDto> updateProductType (HttpServletRequest httpServletRequest, @RequestBody ProductInputDto productInputDto) throws IOException {
-//        permissionUtil.acceptAction(httpServletRequest,"ProductType","shop.id","id",1);
-        productInputService.updateProductInputDto(productInputDto,permissionUtil.getShopId(httpServletRequest));
-        return ResponseEntity.ok().body(productInputService.addProductInputDto(productInputDto,permissionUtil.getShopId(httpServletRequest)));
+    ResponseEntity<?> updateProductType (HttpServletRequest httpServletRequest, @RequestBody ProductInputDto productInputDto) throws IOException {
+        permissionUtil.acceptAction(httpServletRequest,"Product","shop.id","id", Math.toIntExact(productInputDto.getId()));
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setData(productInputService.updateProductInputDto(productInputDto));
+        return ResponseEntity.ok().body(responseDto);
     }
 
     @PostMapping("/delete-product-input")
     ResponseEntity<String> deleteProductInput (HttpServletRequest httpServletRequest, @RequestBody ProductInputDto productInputDto) throws IOException {
-        permissionUtil.acceptAction(httpServletRequest,"ProductType","shop.id","id",1);
-        String notification = productInputService.deleteProductInputDto(productInputDto,permissionUtil.getShopId(httpServletRequest));
+        permissionUtil.acceptAction(httpServletRequest,"Product","shop.id","id", Math.toIntExact(productInputDto.getId()));
+        String notification = productInputService.deleteProductInputDto(productInputDto);
         return ResponseEntity.ok().body(notification);
     }
 }

@@ -22,29 +22,26 @@ public class ProductSupplyController {
 
     @GetMapping("")
     ResponseEntity<List<ProductSupplyDto>> getAllProductSupply (HttpServletRequest httpServletRequest) throws IOException {
-        permissionUtil.acceptAction(httpServletRequest,"ProductType","shop.id","id",1);
         List<ProductSupplyDto> list = productSupplyService.getAllProductSupply(permissionUtil.getShopId(httpServletRequest));
         return ResponseEntity.ok().body(list);
     }
 
     @PostMapping("/create-product-supply")
-    ResponseEntity<ProductSupplyDto> addProductType (HttpServletRequest httpServletRequest, @RequestBody ProductSupplyDto productSupplyDto) throws IOException {
-        permissionUtil.acceptAction(httpServletRequest,"ProductType","shop.id","id",1);
-        //productSupplyService.addProductSupplyDto(productSupplyDto,permissionUtil.getShopId(httpServletRequest));
+    ResponseEntity<ProductSupplyDto> addProductSupply (HttpServletRequest httpServletRequest, @RequestBody ProductSupplyDto productSupplyDto) throws IOException {
+
         return ResponseEntity.ok().body(productSupplyService.addProductSupplyDto(productSupplyDto,permissionUtil.getShopId(httpServletRequest)));
     }
 
     @PostMapping("/update-product-supply")
-    ResponseEntity<ProductSupplyDto> updateProductType (HttpServletRequest httpServletRequest, @RequestBody ProductSupplyDto productSupplyDto ) throws IOException {
-        permissionUtil.acceptAction(httpServletRequest,"ProductType","shop.id","id",1);
-        //productSupplyService.addProductSupplyDto(productSupplyDto,permissionUtil.getShopId(httpServletRequest));
-        return ResponseEntity.ok().body(productSupplyService.updateProductSupplyDto(productSupplyDto,permissionUtil.getShopId(httpServletRequest)));
+    ResponseEntity<ProductSupplyDto> updateProductSupply (HttpServletRequest httpServletRequest, @RequestBody ProductSupplyDto productSupplyDto ) throws IOException {
+        permissionUtil.acceptAction(httpServletRequest,"ProductSupply","shop.id","id",productSupplyDto.getId());
+        return ResponseEntity.ok().body(productSupplyService.updateProductSupplyDto(productSupplyDto));
     }
 
-    @PostMapping("/delete-product-type")
-    ResponseEntity<String> deleteProductType (HttpServletRequest httpServletRequest, @RequestBody ProductSupplyDto productSupplyDto) throws IOException {
+    @PostMapping("/delete-product-supply")
+    ResponseEntity<String> deleteProductSupply (HttpServletRequest httpServletRequest, @RequestBody ProductSupplyDto productSupplyDto) throws IOException {
         permissionUtil.acceptAction(httpServletRequest,"ProductType","shop.id","id",1);
-        String notification = productSupplyService.deleteProductSupplyDto(permissionUtil.getShopId(httpServletRequest),productSupplyDto);
+        String notification = productSupplyService.deleteProductSupplyDto(productSupplyDto);
         return ResponseEntity.ok().body(notification);
     }
 }

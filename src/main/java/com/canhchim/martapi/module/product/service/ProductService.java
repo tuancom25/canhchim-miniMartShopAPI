@@ -40,14 +40,30 @@ public class ProductService {
     }
 
     public ProductDto addProduct(ProductDto productDto, int shopId){
-        return mappingData.mappingProductToDto(productRepository.save(mappingData.mappingProductToDto(productDto)));
+        ProductDto response = null;
+        if (productRepository.existsByCode(productDto.getCode())){
+            productDto.setId(null);
+            productDto.setShopId(shopId);
+            Product product = mappingData.mappingProductToEntity(productDto);
+            response = mappingData.mappingProductToDto(productRepository.save(product));
+            return response;
+        }else {
+            return null;
+        }
     }
 
-    public ProductDto updateProduct(ProductDto productDto, int shopId){
-        return mappingData.mappingProductToDto(productRepository.save(mappingData.mappingProductToDto(productDto)));
+    public ProductDto updateProduct(ProductDto productDto){
+        ProductDto response = null;
+        if (productRepository.existsByCode(productDto.getCode())){
+            Product product = mappingData.mappingProductToEntity(productDto);
+            response = mappingData.mappingProductToDto(productRepository.save(product));
+            return response;
+        }else {
+            return null;
+        }
     }
 
-    public String deleteProduct(ProductDto productDto, int shopId){
+    public String deleteProduct(ProductDto productDto){
         if (productRepository.existsById(Math.toIntExact(productDto.getId()))){
         productRepository.deleteById(Math.toIntExact(productDto.getId()));
         return "Delete";

@@ -38,17 +38,6 @@ public class ProductTypeService {
         if(flag && productTypeDto.getShopId() == shopId){
             newProductType = mappingData.mappingProductTypeDTOToEntity(productTypeDto);
             newProductType.setShop(IShopRepository.findById(shopId).get());
-            System.err.println(
-                    "******************************************"
-                            + newProductType.getShop()
-                            + newProductType.getName()
-                            + newProductType.getCode());
-
-            System.err.println(
-                    "******************************************"
-                            + productTypeDto.getShopId()
-                            + productTypeDto.getProductTypeName()
-                            + productTypeDto.getProductTypeCode());
             return IProductTypeRepository.save(newProductType);
         }else return null;
     }

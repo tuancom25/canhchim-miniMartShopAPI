@@ -31,17 +31,16 @@ public class ProductInputService {
     }
 
     public ProductInputDto addProductInputDto(ProductInputDto productInputDto, int shopId){
-        //productInputRepository.save(mappingData.mappingProductInputDtoToEntity(productInputDto));
+        productInputDto.setShopId(shopId);
         return mappingData.mappingProductInputToDto(productInputRepository.save(mappingData.mappingProductInputDtoToEntity(productInputDto)));
     }
 
-    public ProductInputDto updateProductInputDto(ProductInputDto productInputDto, int shopId){
-        //productInputRepository.save(mappingData.mappingProductInputDtoToEntity(productInputDto));
+    public ProductInputDto updateProductInputDto(ProductInputDto productInputDto){
         return mappingData.mappingProductInputToDto(productInputRepository.save(mappingData.mappingProductInputDtoToEntity(productInputDto)));
     }
 
-    public String deleteProductInputDto(ProductInputDto productInputDto, int shopId){
-        productInputRepository.delete(mappingData.mappingProductInputDtoToEntity(productInputDto));
+    public String deleteProductInputDto(ProductInputDto productInputDto){
+        productInputRepository.deleteById(Math.toIntExact(productInputDto.getId()));
         return "Deleted";
     }
 }

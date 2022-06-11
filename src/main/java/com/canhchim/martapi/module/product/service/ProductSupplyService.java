@@ -47,9 +47,9 @@ public class ProductSupplyService {
         }else return null;
     }
 
-    public ProductSupplyDto updateProductSupplyDto(ProductSupplyDto productSupplyDto, int shopId){
+    public ProductSupplyDto updateProductSupplyDto(ProductSupplyDto productSupplyDto){
         ProductSupply productSupply = IProductSupplyRepository.findByNameAndAddress(productSupplyDto.getName(),productSupplyDto.getAddress()).get();
-        if (productSupply != null && productSupply.getShop().getId() == shopId){
+        if (productSupply != null){
             productSupply.setAddress(productSupplyDto.getAddress());
             productSupply.setName(productSupplyDto.getName());
             IProductSupplyRepository.save(mappingData.mappingProductSupplyDtoToEntity(productSupplyDto));
@@ -57,9 +57,9 @@ public class ProductSupplyService {
         } else return null;
     }
 
-    public String deleteProductSupplyDto( int shopId, ProductSupplyDto productSupplyDto){
+    public String deleteProductSupplyDto( ProductSupplyDto productSupplyDto){
         ProductSupply productSupply = IProductSupplyRepository.findByNameAndAddress(productSupplyDto.getName(),productSupplyDto.getAddress()).get();
-        if (productSupply != null && productSupply.getShop().getId() == shopId){
+        if (productSupply != null){
             IProductSupplyRepository.deleteById((long) productSupply.getId());
             return "Deleted";
         } else return "Not Found";

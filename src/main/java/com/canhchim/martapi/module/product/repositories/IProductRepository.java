@@ -12,5 +12,6 @@ public interface IProductRepository extends JpaRepository<Product, Integer> {
     @Query("select p from Product p where p.shop.id = ?1")
     List<Product> findByShop_Id(Integer id);
 
-
+    @Query("select (count(p) > 0) from Product p where p.code = ?1")
+    boolean existsByCode(String code);
 }

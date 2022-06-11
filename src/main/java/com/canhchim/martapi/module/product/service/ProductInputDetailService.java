@@ -28,21 +28,20 @@ public class ProductInputDetailService {
     }
 
     public ProductInputDetailDto createProductDetail(ProductInputDetailDto productInputDetailDto,int shopId){
-
-        if (productInputDetailDto.getShopId() == shopId){
+        productInputDetailDto.setShopId(shopId);
+        if (productInputDetailRepository.existsByProductInput_Id(Long.valueOf(productInputDetailDto.getProductInputId()))){
             return mappingData.mappingProductInputDetailToDTO(productInputDetailRepository.save(mappingData.mappingProductInputDetailDTOToEntity(productInputDetailDto)));
-        }else return null;
+        }else {
+            return null;
+        }
     }
 
-    public ProductInputDetailDto updateProductDetail(ProductInputDetailDto productInputDetailDto,int shopId){
-
-        if (productInputDetailDto.getShopId() == shopId){
-            return mappingData.mappingProductInputDetailToDTO(productInputDetailRepository.save(mappingData.mappingProductInputDetailDTOToEntity(productInputDetailDto)));
-        }else return null;
+    public ProductInputDetailDto updateProductDetail(ProductInputDetailDto productInputDetailDto){
+        return mappingData.mappingProductInputDetailToDTO(productInputDetailRepository.save(mappingData.mappingProductInputDetailDTOToEntity(productInputDetailDto)));
     }
 
-    public String deleteProductDetail(ProductInputDetailDto productInputDetailDto, int shopId ){
-        if (productInputDetailDto.getShopId() == shopId){
+    public String deleteProductDetail(ProductInputDetailDto productInputDetailDto){
+        if (productInputDetailRepository.existsById(productInputDetailDto.getId())){
             productInputDetailRepository.deleteById(productInputDetailDto.getId());
         }else return "Deleted";
         return "Fail";

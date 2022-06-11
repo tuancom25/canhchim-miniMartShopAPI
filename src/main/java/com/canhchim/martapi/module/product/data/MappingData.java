@@ -180,7 +180,7 @@ public class MappingData {
         return dto;
     }
 
-    public Product mappingProductToDto(ProductDto dto){
+    public Product mappingProductToEntity(ProductDto dto){
         Product entity = new Product();
         entity.setId(dto.getId());
         entity.setCode(dto.getCode());

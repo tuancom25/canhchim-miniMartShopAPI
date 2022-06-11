@@ -9,4 +9,6 @@ import java.util.List;
 public interface IProductInputDetailRepository extends JpaRepository<ProductInputDetail, Long> {
     @Query("select p from ProductInputDetail p where p.productInput.shop.id = ?1")
     List<ProductInputDetail> findByProductInput_Shop_Id(Integer id);
+
+    boolean existsByProductInput_Id(Long id);
 }

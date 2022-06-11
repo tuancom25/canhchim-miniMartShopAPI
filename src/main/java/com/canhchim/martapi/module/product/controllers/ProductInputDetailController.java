@@ -26,23 +26,22 @@ public class ProductInputDetailController {
     }
 
     @PostMapping("/create-product-input-detail")
-    ResponseEntity<ProductInputDetailDto> addProductType (HttpServletRequest httpServletRequest, @RequestBody ProductInputDetailDto productInputDetailDto){
-        //permissionUtil.acceptAction(httpServletRequest,"ProductType","shop.id","id",1);
+    ResponseEntity<ProductInputDetailDto> addInputDetail (HttpServletRequest httpServletRequest, @RequestBody ProductInputDetailDto productInputDetailDto){
         ProductInputDetailDto productDetail = detailService.createProductDetail(productInputDetailDto,permissionUtil.getShopId(httpServletRequest));
         return ResponseEntity.ok().body(productDetail);
     }
 
     @PostMapping("/update-product-input-detail")
-    ResponseEntity<ProductInputDetailDto> updateProductType (HttpServletRequest httpServletRequest, @RequestBody ProductInputDetailDto productInputDetailDto) throws IOException {
-        //permissionUtil.acceptAction(httpServletRequest,"ProductType","shop.id","id",1);
-        ProductInputDetailDto productDetail = detailService.createProductDetail(productInputDetailDto,permissionUtil.getShopId(httpServletRequest));
+    ResponseEntity<ProductInputDetailDto> updateProductInputDetail (HttpServletRequest httpServletRequest, @RequestBody ProductInputDetailDto productInputDetailDto) throws IOException {
+        permissionUtil.acceptAction(httpServletRequest,"ProductInputDetail","shop.id","id", Math.toIntExact(productInputDetailDto.getId()));
+        ProductInputDetailDto productDetail = detailService.updateProductDetail(productInputDetailDto);
         return ResponseEntity.ok().body(productDetail);
     }
 
     @GetMapping("/delete-product-input-detail")
-    ResponseEntity<String> deleteProductInput (HttpServletRequest httpServletRequest, @RequestBody ProductInputDetailDto productInputDetailDto) throws IOException {
-        //permissionUtil.acceptAction(httpServletRequest,"ProductType","shop.id","id",1);
-        String notification = detailService.deleteProductDetail(productInputDetailDto,permissionUtil.getShopId(httpServletRequest));
+    ResponseEntity<String> deleteProductInputDetail (HttpServletRequest httpServletRequest, @RequestBody ProductInputDetailDto productInputDetailDto) throws IOException {
+        permissionUtil.acceptAction(httpServletRequest,"ProductInputDetail","shop.id","id", Math.toIntExact(productInputDetailDto.getId()));
+        String notification = detailService.deleteProductDetail(productInputDetailDto);
         return ResponseEntity.ok().body(notification);
     }
 }
