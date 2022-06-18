@@ -1,5 +1,5 @@
 /**
- * @Author: Duong Ngo Nam Anh
+ * @author Duong Ngo Nam Anh
  */
 
 package com.canhchim.martapi.module.user;
@@ -24,14 +24,6 @@ public interface IUserService {
      */
     List<User> findAll();
 
-
-    /**
-     * Lấy một page User
-     * @param shopId
-     * @param pageable
-     * @return
-     */
-    Page<?> findAll(Integer shopId, Pageable pageable);
 
 
     /**

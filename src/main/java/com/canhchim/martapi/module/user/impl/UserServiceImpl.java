@@ -1,5 +1,5 @@
 /**
- * @Author: Duong Ngo Nam Anh
+ * @author Duong Ngo Nam Anh
  */
 
 package com.canhchim.martapi.module.user.impl;
@@ -9,36 +9,30 @@ import com.canhchim.martapi.dto.user.UserDetailDto;
 import com.canhchim.martapi.dto.user.UserRequestDto;
 import com.canhchim.martapi.dto.user.UserResponseDto;
 import com.canhchim.martapi.entity.User;
-import com.canhchim.martapi.module.role.IRelFunctionsRoleService;
-import com.canhchim.martapi.module.user.IRelUsersRoleService;
+import com.canhchim.martapi.module.role.IRelUsersFunctionService;
 import com.canhchim.martapi.module.user.IUserRepository;
 import com.canhchim.martapi.module.user.IUserService;
+import com.canhchim.martapi.util.HashUtil;
 import com.canhchim.martapi.util.RsaUtil;
-import org.apache.commons.codec.digest.DigestUtils;
+import com.canhchim.martapi.util.SaltUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Service
 public class UserServiceImpl implements IUserService {
     private final IUserRepository userRepository;
-    private final IRelUsersRoleService roleOfUserService;
-    private final IRelFunctionsRoleService functionAndRoleService;
-    private final RsaUtil rsaUtil;
+    private final IRelUsersFunctionService relUsersFunctionService;
 
-    public UserServiceImpl(IUserRepository userRepository, IRelUsersRoleService roleOfUserService, IRelFunctionsRoleService functionAndRoleService, RsaUtil rsaUtil) {
+    public UserServiceImpl(IUserRepository userRepository, IRelUsersFunctionService relUsersFunctionService) {
         this.userRepository = userRepository;
-        this.roleOfUserService = roleOfUserService;
-        this.functionAndRoleService = functionAndRoleService;
-        this.rsaUtil = rsaUtil;
+        this.relUsersFunctionService = relUsersFunctionService;
     }
     @Override
     public User findByUsernameLike(String username) throws Exception {
@@ -51,11 +45,6 @@ public class UserServiceImpl implements IUserService {
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
-    }
-
-    @Override
-    public Page<?> findAll(Integer shopId, Pageable pageable) {
-        return userRepository.findByUserShop_Id(shopId, pageable);
     }
 
     @Override
@@ -80,12 +69,9 @@ public class UserServiceImpl implements IUserService {
     public UserDetailDto findUserDetailByUsernameLike(String username) throws IOException {
         User user = userRepository.findByUsernameLike(username);
         if(!user.getActived()) throw new IOException("Tài khoản của bạn đã bị khóa!");
-        List<Integer> roles = roleOfUserService.findRoleIdsByUser_id(user.getId());
         List<String> functions = new ArrayList<>();
 
-        for (Integer roleId: roles) {
-            for (String function: functionAndRoleService.findFunction_IdByRole_Id(roleId)) functions.add(function);
-        }
+        for (String function: relUsersFunctionService.findFunctionNamesByUser_Id(user.getId())) functions.add(function);
 
         UserDetailDto userDetailDto = new UserDetailDto();
         userDetailDto.setUsername(user.getUsername());
@@ -98,9 +84,9 @@ public class UserServiceImpl implements IUserService {
     public UserResponseDto create(UserRequestDto userRequestDto) throws IOException, NoSuchAlgorithmException {
         if(userRepository.existsById(userRequestDto.getId())) {
             User user = new User();
-            String salt = generateSalt();
-            String password = hashPassword(userRequestDto.getPassword(), salt);
-            RSADto rsaDto = rsaUtil.generate();
+            String salt = SaltUtil.generate(12);
+            String password = HashUtil.sha256(userRequestDto.getPassword() + salt);
+            RSADto rsaDto = RsaUtil.generate();
 
             user.setUsername(userRequestDto.getUsername());
             user.setFullname(userRequestDto.getFullName());
@@ -135,16 +121,5 @@ public class UserServiceImpl implements IUserService {
         User user = userRepository.findByUsernameLike(username);
         user.setActived(false);
         userRepository.saveAndFlush(user);
-    }
-
-    private String generateSalt() {
-        byte[] array = new byte[12]; // length is bounded by 7
-        new Random().nextBytes(array);
-        String salt = new String(array, Charset.forName("UTF-8"));
-        return salt;
-    }
-
-    private String hashPassword(String password, String salt) {
-        return DigestUtils.sha256Hex(password + salt);
     }
 }

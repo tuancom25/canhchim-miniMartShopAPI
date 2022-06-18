@@ -1,14 +1,42 @@
 package com.canhchim.martapi.entity;
 
+import com.canhchim.martapi.module.multipleshop.entity.AbstractBaseEntity;
+import lombok.Builder;
+
 import javax.persistence.*;
 import java.time.Instant;
 
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "employees")
+public class Employee extends AbstractBaseEntity {
+    public Employee() {
+    }
+
+    @Builder
+    public Employee(Integer shopId, Long id, String username, String fullname, String phone, String email, String password, String salt, String otp, String cccd, String address, Instant lastTimeActive, Integer duringTime, String publicKey, String privateKey, String ipLastWork, String deviceList, Boolean actived) {
+        super(shopId);
+        this.id = id;
+        this.username = username;
+        this.fullname = fullname;
+        this.phone = phone;
+        this.email = email;
+        this.password = password;
+        this.salt = salt;
+        this.otp = otp;
+        this.cccd = cccd;
+        this.address = address;
+        this.lastTimeActive = lastTimeActive;
+        this.duringTime = duringTime;
+        this.publicKey = publicKey;
+        this.privateKey = privateKey;
+        this.ipLastWork = ipLastWork;
+        this.deviceList = deviceList;
+        this.actived = actived;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "employee_id", nullable = false)
     private Long id;
 
     @Column(name = "username", nullable = false, length = 60)

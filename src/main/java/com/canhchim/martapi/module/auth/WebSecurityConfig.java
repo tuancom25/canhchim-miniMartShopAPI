@@ -35,6 +35,7 @@ public class WebSecurityConfig {
             .authorizeRequests()
             .antMatchers("/auth/admin/login").permitAll()
             .antMatchers("/auth/user/login").permitAll()
+                .antMatchers("/auth/employee/login").permitAll()
             .antMatchers("/shop/test/a").hasAuthority("findAllUser")
             // all other requests need to be authenticated
             .anyRequest().authenticated().and()

@@ -1,5 +1,5 @@
 /**
- * @author: Duong Ngo Nam Anh
+ * @author Duong Ngo Nam Anh
  */
 
 package com.canhchim.martapi.module.auth;
@@ -54,6 +54,14 @@ public class AuthController {
     @PostMapping("/user/login")
     public ResponseEntity<?> userLogin(@RequestBody LoginRequestDto loginRequestDto, HttpServletRequest request) throws Exception {
         LoginResponseDto loginResponseDto = authService.loginUser(loginRequestDto.getUsername(), loginRequestDto.getPassword());
+        return ResponseEntity.status(HttpServletResponse.SC_OK)
+                .header("Authorization", "Bearer " + loginResponseDto.getAccessToken())
+                .body(loginResponseDto);
+    }
+
+    @PostMapping("/employee/login")
+    public ResponseEntity<?> employeeLogin(@RequestBody LoginRequestDto loginRequestDto) throws Exception {
+        LoginResponseDto loginResponseDto = authService.loginEmployee(loginRequestDto.getUsername(), loginRequestDto.getPassword());
         return ResponseEntity.status(HttpServletResponse.SC_OK)
                 .header("Authorization", "Bearer " + loginResponseDto.getAccessToken())
                 .body(loginResponseDto);

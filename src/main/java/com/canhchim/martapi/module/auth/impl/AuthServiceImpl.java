@@ -1,39 +1,41 @@
+/**
+ * @author Duong Ngo Nam Anh
+ */
+
 package com.canhchim.martapi.module.auth.impl;
 
 import com.canhchim.martapi.dto.auth.LoginResponseDto;
 import com.canhchim.martapi.dto.RSADto;
 import com.canhchim.martapi.dto.auth.UserLoginResponseDto;
 import com.canhchim.martapi.entity.Admin;
+import com.canhchim.martapi.entity.Employee;
 import com.canhchim.martapi.entity.User;
 import com.canhchim.martapi.module.admin.IAdminService;
 import com.canhchim.martapi.module.auth.IAuthService;
-import com.canhchim.martapi.module.role.IRelFunctionsRoleService;
-import com.canhchim.martapi.module.user.IRelUsersRoleService;
+import com.canhchim.martapi.module.employee.IEmployeeService;
+import com.canhchim.martapi.module.role.IRelUsersFunctionService;
 import com.canhchim.martapi.module.user.IUserService;
+import com.canhchim.martapi.util.HashUtil;
 import com.canhchim.martapi.util.JwtUtil;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
 
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Service
 public class AuthServiceImpl implements IAuthService {
     private JwtUtil jwtUtil;
     private IAdminService adminService;
-
     private IUserService userService;
-    private IRelUsersRoleService roleOfUserService;
-    private IRelFunctionsRoleService relFunctionsRoleService;
+    private IEmployeeService employeeService;
+    private IRelUsersFunctionService relUsersFunctionService;
 
-    public AuthServiceImpl(JwtUtil jwtUtil, IAdminService adminService, IUserService userService, IRelUsersRoleService roleOfUserService, IRelFunctionsRoleService relFunctionsRoleService) {
+    public AuthServiceImpl(JwtUtil jwtUtil, IAdminService adminService, IUserService userService, IEmployeeService employeeService, IRelUsersFunctionService relUsersFunctionService) {
         this.jwtUtil = jwtUtil;
         this.adminService = adminService;
         this.userService = userService;
-        this.roleOfUserService = roleOfUserService;
-        this.relFunctionsRoleService = relFunctionsRoleService;
+        this.employeeService = employeeService;
+        this.relUsersFunctionService = relUsersFunctionService;
     }
 
     @Override
@@ -42,10 +44,10 @@ public class AuthServiceImpl implements IAuthService {
 
         Admin admin = adminService.findByAdminNameLike(username);
         String salt = admin.getSalt();
-        if (admin.getPassword().equals(hashPassword(password, salt))) {
+        if (admin.getPassword().equals(HashUtil.sha256(password + salt))) {
             //Login success
-            String accessToken = jwtUtil.generateToken(username, "ADMIN", 0);
-            loginResponseDto.setAccessToken(accessToken);
+//            String accessToken = jwtUtil.generateToken(admin.getId(), username, "ADMIN", 0);
+//            loginResponseDto.setAccessToken(accessToken);
             return loginResponseDto;
         }
         throw new Exception();
@@ -55,50 +57,47 @@ public class AuthServiceImpl implements IAuthService {
     public LoginResponseDto loginUser(String username, String password) throws Exception {
         //Tìm User
         User user = userService.findByUsernameLike(username);
-        System.out.println(user);
         //Kiểm tra user có tồn tại trong DB?
-        if (user == null) throw new Exception("Tài khoản hoặc mật khẩu không chính xác!");
-        String salt = user.getSalt();
-        if (user.getPassword().equals(hashPassword(password, salt))) {
-            //Login success
-            LoginResponseDto loginResponseDto = new LoginResponseDto();
-            UserLoginResponseDto userLoginResponseDto = new UserLoginResponseDto();
-            RSADto rsaDto = new RSADto();
-            List<Integer> roles = roleOfUserService.findRoleIdsByUser_id(user.getId());
-            List<String> functions = new ArrayList<>();
+        if (user != null) {
+            String salt = user.getSalt();
+            if (user.getPassword().equals(HashUtil.sha256(password + salt))) { // Kiểm tra Password trong DB có trùng với Password truyền vào không?
+                //Login success
+                LoginResponseDto loginResponseDto = new LoginResponseDto();
+                RSADto rsaDto = new RSADto();
+                List<String> functions = new ArrayList<>();
 
-            for (Integer roleId: roles) {
-                for (String function: relFunctionsRoleService.findFunction_IdByRole_Id(roleId)) functions.add(function);
+                for (String function: relUsersFunctionService.findFunctionNamesByUser_Id(user.getId())) functions.add(function);
+
+                String accessToken = jwtUtil.generateToken(user.getId(), username, "SHOP", 0);
+                loginResponseDto.setUser(UserLoginResponseDto.fromEntity(user, functions));
+                loginResponseDto.setAccessToken(accessToken);
+
+                return loginResponseDto;
             }
-
-            userLoginResponseDto.setId(user.getId());
-            userLoginResponseDto.setUsername(user.getUsername());
-            userLoginResponseDto.setFullname(user.getFullname());
-            userLoginResponseDto.setPhone(user.getPhone());
-            userLoginResponseDto.setEmail(user.getEmail());
-            userLoginResponseDto.setCccd(user.getCccd());
-            userLoginResponseDto.setAddress(user.getAddress());
-            userLoginResponseDto.setPublicKey(user.getPublicKey());
-            userLoginResponseDto.setIpLastWork(user.getIpLastWork());
-            userLoginResponseDto.setFunctions(functions);
-
-            String accessToken = jwtUtil.generateToken(username, "SHOP", user.getShop().getId());
-            loginResponseDto.setUser(userLoginResponseDto);
-            loginResponseDto.setAccessToken(accessToken);
-
-            return loginResponseDto;
         }
         throw new Exception("Tài khoản hoặc mật khẩu không chính xác!");
     }
 
-    private String generateSalt() {
-        byte[] array = new byte[12]; // length is bounded by 7
-        new Random().nextBytes(array);
-        String salt = new String(array, Charset.forName("UTF-8"));
-        return salt;
-    }
+    @Override
+    public LoginResponseDto loginEmployee(String username, String password) throws Exception {
+        Employee employee = employeeService.findByUsernameLikeIgnoreCase(username);
+        if (employee != null) {
+            String salt = employee.getSalt();
+            if (employee.getPassword().equals(HashUtil.sha256(password + salt))) { // Kiểm tra Password trong DB có trùng với Password truyền vào không?
+                //Login success
+                LoginResponseDto loginResponseDto = new LoginResponseDto();
+                RSADto rsaDto = new RSADto();
+                List<String> functions = new ArrayList<>();
 
-    private String hashPassword(String password, String salt) {
-        return DigestUtils.sha256Hex(password + salt);
+                for (String function: relUsersFunctionService.findFunctionNamesByUser_Id(employee.getId())) functions.add(function);
+
+                String accessToken = jwtUtil.generateToken(employee.getId(), username, "EMPLOYEE", employee.getShopId());
+                loginResponseDto.setUser(UserLoginResponseDto.fromEntity(employee, functions));
+                loginResponseDto.setAccessToken(accessToken);
+
+                return loginResponseDto;
+            }
+        }
+        throw new Exception("Tài khoản hoặc mật khẩu không chính xác!");
     }
 }

@@ -14,9 +14,12 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
-@Component
-public class RsaUtil {
-    public RSADto generate() throws NoSuchAlgorithmException {
+public final class RsaUtil {
+    private PublicKey publicKey;
+    private PrivateKey privateKey;
+
+
+    public static RSADto generate() throws NoSuchAlgorithmException {
         //Tạo cặp khóa RSA
         KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
         generator.initialize(1024);
@@ -30,7 +33,7 @@ public class RsaUtil {
         return rsaDto;
     }
 
-    public String encrypt(String publicKey, String message) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+    public static String encrypt(String publicKey, String message) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
         //Convert publicKey từ String sang byte[]
         byte[] pbKeyBytes = Base64.getDecoder().decode(publicKey);
         //Tạo đối tượng PublicKey từ byte[]
@@ -46,7 +49,7 @@ public class RsaUtil {
         return Base64.getEncoder().encodeToString(encryptedMessageBytes);
     }
 
-    public String decrypt(String privateKey, String message) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+    public static String decrypt(String privateKey, String message) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
         //Convert privateKey từ String sang byte[]
         byte[] pvKeyBytes = Base64.getDecoder().decode(privateKey);
         //Tạo đối tượng PrivateKey từ byte[]

@@ -3,6 +3,7 @@ package com.canhchim.martapi.module.auth.filter;
 import com.canhchim.martapi.dto.user.UserDetailDto;
 import com.canhchim.martapi.entity.Admin;
 import com.canhchim.martapi.module.admin.IAdminService;
+import com.canhchim.martapi.module.employee.IEmployeeService;
 import com.canhchim.martapi.module.user.IUserService;
 import com.canhchim.martapi.util.JwtUtil;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -28,11 +29,13 @@ public class JwtFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final IUserService userService;
     private final IAdminService adminService;
+    private final IEmployeeService employeeService;
 
-    public JwtFilter(JwtUtil jwtUtil, IUserService userService, IAdminService adminService) {
+    public JwtFilter(JwtUtil jwtUtil, IUserService userService, IAdminService adminService, IEmployeeService employeeService) {
         this.jwtUtil = jwtUtil;
         this.userService = userService;
         this.adminService = adminService;
+        this.employeeService = employeeService;
     }
 
     @Override
@@ -63,16 +66,20 @@ public class JwtFilter extends OncePerRequestFilter {
             if (type.equals("ADMIN")) {
                 //Type ADMIN
                 userDetails = initUserDetailsFromAdmin(username);
-            }
-            else {
+            } else if (type.equals("SHOP")) {
                 //Type SHOP
                 userDetails = initUserDetailsFromUser(username);
+            } else {
+                //Type EMPLOYEE
+                userDetails = initUserDetailsFromEmployee(username);
             }
 
             // if token is valid configure Spring Security to manually set
             // authentication
             if (jwtUtil.validateToken(jwtToken, userDetails)) {
                 //Login success
+                request.setAttribute("X-SHOP-ID", jwtUtil.getShopIdFromToken(jwtToken));
+                System.out.println(String.format("Filter: %d", jwtUtil.getShopIdFromToken(jwtToken)));
                 //Init UsernamePasswordAuthenticationToken
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
@@ -96,6 +103,18 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     private UserDetails initUserDetailsFromUser(String username) throws IOException {
+        UserDetailDto user = this.userService.findUserDetailByUsernameLike(username);
+        String password = user.getPassword();
+        Collection<GrantedAuthority> roles = new HashSet<>();
+        for (String function: user.getFunctions()) {
+            roles.add(new SimpleGrantedAuthority(function));
+            System.out.println(function);
+        }
+        UserDetails userDetails = new org.springframework.security.core.userdetails.User(username, password, roles);
+        return userDetails;
+    }
+
+    private UserDetails initUserDetailsFromEmployee(String username) throws IOException {
         UserDetailDto user = this.userService.findUserDetailByUsernameLike(username);
         String password = user.getPassword();
         Collection<GrantedAuthority> roles = new HashSet<>();

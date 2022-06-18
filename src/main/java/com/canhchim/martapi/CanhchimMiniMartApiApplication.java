@@ -1,11 +1,13 @@
 package com.canhchim.martapi;
 
-import com.canhchim.martapi.dto.RSADto;
-import com.canhchim.martapi.util.RsaUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.EnableLoadTimeWeaving;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
+@EnableTransactionManagement
+@EnableLoadTimeWeaving(aspectjWeaving = EnableLoadTimeWeaving.AspectJWeaving.ENABLED)
 public class CanhchimMiniMartApiApplication {
     public static void main(String[] args) {
 

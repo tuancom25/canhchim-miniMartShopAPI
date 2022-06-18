@@ -1,5 +1,5 @@
 /**
- * @Author: Duong Ngo Nam Anh
+ * @author Duong Ngo Nam Anh
  */
 
 package com.canhchim.martapi.module.user;
@@ -29,22 +29,6 @@ public class UserController {
     public UserController(IUserService userService, PermissionUtil permissionUtil) {
         this.userService = userService;
         this.permissionUtil = permissionUtil;
-    }
-
-    @GetMapping("")
-    public ResponseEntity<?> getAll(
-            HttpServletRequest httpServletRequest,
-            @RequestParam @Nullable Integer pageNumber,
-            @RequestParam @Nullable Integer pageSize
-    ) {
-        if (pageSize == null) pageSize = 20;
-        if (pageNumber == null) pageNumber = 0;
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        int shopId = permissionUtil.getShopId(httpServletRequest);
-
-        ResponseDto responseDto = new ResponseDto();
-        responseDto.setData(userService.findAll(shopId, pageable));
-        return ResponseEntity.status(HttpServletResponse.SC_OK).body(responseDto);
     }
     @PostMapping("")
     public ResponseEntity<?> create(@RequestBody UserRequestDto userRequestDto) throws IOException, NoSuchAlgorithmException {
