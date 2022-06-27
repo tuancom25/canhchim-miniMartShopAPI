@@ -72,7 +72,6 @@ public class MappingData {
         entity.setProductInput(productInputRepository.findById(dto.getProductInputId()).get());
         entity.setShop(shopRepository.findById(dto.getShopId()).get());
 
-
         return entity;
     }
 
@@ -171,6 +170,7 @@ public class MappingData {
         dto.setHasTopUp(entity.getHasTopUp());
         dto.setIsTopUp(entity.getIsTopUp());
 
+
         dto.setProductUnitId(entity.getProductUnit().getId());
         dto.setShopId(entity.getShop().getId());
         dto.setUserInputId(entity.getUserInput().getId());
@@ -196,20 +196,16 @@ public class MappingData {
         entity.setSaleStatus(dto.getSaleStatus());
         entity.setHasTopUp(dto.getHasTopUp());
         entity.setIsTopUp(dto.getIsTopUp());
-
-//        entity.setProductUnitId(dto.getProductUnit().getId());
-//        entity.setShopId(dto.getShop().getId());
-//        entity.setUserInputId(dto.getUserInput().getId());
-//        entity.setUserLastUpdateId(dto.getUserLastUpdate().getId());
-//        entity.setSupplyId(dto.getSupply().getId());
-//        entity.setCategoryId(dto.getCategory().getId());
-
         entity.setProductUnit(productUnitRepository.findById(dto.getProductUnitId()).get());
+        entity.setSupply(productSupplyRepository.findById(dto.getSupplyId()).get());
+        entity.setCategory(categoryRepository.findById(dto.getCategoryId()).get());
+
         entity.setShop(shopRepository.findById(dto.getShopId()).get());
         entity.setUserInput(userRepository.findById(dto.getUserInputId()).get());
         entity.setUserLastUpdate(userRepository.findById(dto.getUserLastUpdateId()).get());
-        entity.setSupply(productSupplyRepository.findById(dto.getSupplyId()).get());
-        entity.setCategory(categoryRepository.findById(dto.getCategoryId()).get());
+
+        System.err.println(dto.getCategoryId()+" xxx " + dto.getSupplyId() + " xxx " + dto.getProductUnitId() );
+
         return entity;
     }
 

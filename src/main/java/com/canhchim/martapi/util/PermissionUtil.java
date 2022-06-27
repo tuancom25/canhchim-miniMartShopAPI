@@ -39,7 +39,7 @@ public class PermissionUtil {
             String entity,
             String shopIdName,
             String rowIdName,
-            int rowId
+            long rowId
     ) throws IOException {
         int shopId = getShopId(request);
         String query = "select (count(e) > 0) from " + entity + " e where e." + rowIdName + " = :rowId and e." + shopIdName + " = :shopId";
