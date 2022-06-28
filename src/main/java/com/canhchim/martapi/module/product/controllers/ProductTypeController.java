@@ -55,7 +55,7 @@ public class ProductTypeController {
 
     @PostMapping("/delete-product-type")
     ResponseEntity<String> deleteProductType (HttpServletRequest httpServletRequest, @RequestBody ProductTypeDto productTypeDto) throws IOException {
-        permissionUtil.acceptAction(httpServletRequest,"ProductType","shop.id","id",1);
+        //permissionUtil.acceptAction(httpServletRequest,"ProductType","shop.id","id",1);
         String notification = productTypeService.delete(productTypeDto,permissionUtil.getShopId(httpServletRequest));
         return ResponseEntity.status(HttpServletResponse.SC_CREATED).body(notification);
     }

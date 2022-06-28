@@ -33,14 +33,14 @@ public class ProductInputDetailController {
 
     @PostMapping("/update-product-input-detail")
     ResponseEntity<ProductInputDetailDto> updateProductInputDetail (HttpServletRequest httpServletRequest, @RequestBody ProductInputDetailDto productInputDetailDto) throws IOException {
-        permissionUtil.acceptAction(httpServletRequest,"ProductInputDetail","shop.id","id", Math.toIntExact(productInputDetailDto.getId()));
+        //permissionUtil.acceptAction(httpServletRequest,"ProductInputDetail","shop.id","id", Math.toIntExact(productInputDetailDto.getId()));
         ProductInputDetailDto productDetail = detailService.updateProductDetail(productInputDetailDto);
         return ResponseEntity.ok().body(productDetail);
     }
 
     @GetMapping("/delete-product-input-detail")
     ResponseEntity<String> deleteProductInputDetail (HttpServletRequest httpServletRequest, @RequestBody ProductInputDetailDto productInputDetailDto) throws IOException {
-        permissionUtil.acceptAction(httpServletRequest,"ProductInputDetail","shop.id","id", Math.toIntExact(productInputDetailDto.getId()));
+        //permissionUtil.acceptAction(httpServletRequest,"ProductInputDetail","shop.id","id", Math.toIntExact(productInputDetailDto.getId()));
         String notification = detailService.deleteProductDetail(productInputDetailDto);
         return ResponseEntity.ok().body(notification);
     }

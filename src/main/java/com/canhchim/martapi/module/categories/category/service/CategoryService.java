@@ -12,6 +12,7 @@ import com.canhchim.martapi.util.MessageConstants;
 import com.canhchim.martapi.util.MessagesUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,9 +33,9 @@ public class CategoryService {
 
     // Get All Category
 
-    public List<CategoryDto> findAll(int page, int size) {
-        List<Category> categoryList = categoryRepository.findAllCategory(PageRequest.of(page,size)).toList();
-        return categoryList.stream().map(convert::convertCategoryToDto).collect(Collectors.toList());
+    public Page<CategoryDto> findAll(int page, int size) {
+        Page<Category> categoryList = categoryRepository.findAllCategory(PageRequest.of(page,size));
+        return categoryList.map(convert::convertCategoryToDto);
     }
     // Get Category by Id
     public CategoryDto findById(Integer id) throws Exception {

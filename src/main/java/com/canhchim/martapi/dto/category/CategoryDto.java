@@ -19,5 +19,4 @@ public class CategoryDto implements Serializable {
     private String comment;
     private String imageLink;
     private Integer shopId;
-
 }

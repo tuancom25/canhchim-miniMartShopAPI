@@ -35,7 +35,7 @@ public class ProductInputController {
 
     @PostMapping("/update-product-input")
     ResponseEntity<?> updateProductType (HttpServletRequest httpServletRequest, @RequestBody ProductInputDto productInputDto) throws IOException {
-        permissionUtil.acceptAction(httpServletRequest,"Product","shop.id","id", Math.toIntExact(productInputDto.getId()));
+        //permissionUtil.acceptAction(httpServletRequest,"Product","shop.id","id", Math.toIntExact(productInputDto.getId()));
         ResponseDto responseDto = new ResponseDto();
         responseDto.setData(productInputService.updateProductInputDto(productInputDto));
         return ResponseEntity.ok().body(responseDto);
@@ -43,7 +43,7 @@ public class ProductInputController {
 
     @PostMapping("/delete-product-input")
     ResponseEntity<String> deleteProductInput (HttpServletRequest httpServletRequest, @RequestBody ProductInputDto productInputDto) throws IOException {
-        permissionUtil.acceptAction(httpServletRequest,"Product","shop.id","id", Math.toIntExact(productInputDto.getId()));
+        //permissionUtil.acceptAction(httpServletRequest,"Product","shop.id","id", Math.toIntExact(productInputDto.getId()));
         String notification = productInputService.deleteProductInputDto(productInputDto);
         return ResponseEntity.ok().body(notification);
     }

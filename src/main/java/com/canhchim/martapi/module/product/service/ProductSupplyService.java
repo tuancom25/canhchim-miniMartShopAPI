@@ -6,6 +6,10 @@ import com.canhchim.martapi.module.product.data.requestDTO.ProductSupplyDto;
 import com.canhchim.martapi.module.product.repositories.IProductSupplyRepository;
 import com.canhchim.martapi.module.product.repositories.IShopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,13 +26,11 @@ public class ProductSupplyService {
     @Autowired
     IShopRepository IShopRepository;
 
-   public List<ProductSupplyDto> getAllProductSupply(int shopId){
-        List<ProductSupply> productSupplies = IProductSupplyRepository.findByShop_Id(shopId);
-        List<ProductSupplyDto> list = new ArrayList<ProductSupplyDto>();
-        for (ProductSupply p : productSupplies) {
-            list.add(mappingData.mappingProductSupplyToDto(p));
-        }
-        return list;
+   public Page<ProductSupplyDto> getAllProductSupply(int shopId,int page, int size){
+        Sort sort = Sort.by("id").descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<ProductSupply> productSupplies = IProductSupplyRepository.findByShop_Id(pageable,shopId);
+        return productSupplies.map(mappingData::mappingProductSupplyToDto);
     }
 
     public ProductSupplyDto addProductSupplyDto(ProductSupplyDto productSupplyDto, int shopId){
